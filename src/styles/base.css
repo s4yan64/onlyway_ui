@@ -1,0 +1,27 @@
+/* ============================================================================
+   @onlyway/ui · base.css — comportement « app native » commun à toutes les PWA.
+   À importer UNE fois (après tokens.css). Voir README pour le <meta viewport>.
+   ============================================================================ */
+
+/* Pas de zoom/pinch sur l'app : on autorise le scroll (vertical + horizontal),
+   on interdit le pincement-zoom. À compléter par le meta viewport user-scalable=no. */
+html {
+  -webkit-text-size-adjust: 100%;
+  touch-action: pan-x pan-y;
+}
+
+body {
+  overscroll-behavior-y: none;        /* pas de "rebond" / pull-to-refresh */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Désactive le double-tap-zoom sur les éléments interactifs. */
+button,
+a,
+[role="button"] {
+  touch-action: manipulation;
+}
+
+/* Le bottom nav est TOUJOURS fixé en bas (lock) — déjà porté par le composant
+   <BottomNav> (fixed inset-x-0 bottom-0). Prévoir un padding-bas au contenu
+   (PageContainer = pb-24) pour qu'il ne passe pas dessous. */
