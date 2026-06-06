@@ -321,10 +321,10 @@ function ThemeSelector() {
         },
         className: cn(
           "flex h-12 flex-col items-center justify-center gap-0.5 rounded-md border text-sm font-medium transition active:opacity-70",
-          on ? "border-brand bg-brand/10 text-foreground" : "border-border bg-card text-foreground"
+          on ? "border-foreground bg-foreground text-background" : "border-border bg-card text-foreground"
         ),
         children: [
-          /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: cn("h-5 w-5", on ? "text-brand" : "text-muted-foreground") }),
+          /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: cn("h-5 w-5", on ? "text-background" : "text-muted-foreground") }),
           label
         ]
       },

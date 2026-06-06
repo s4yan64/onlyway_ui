@@ -1,6 +1,6 @@
 {
   "name": "@onlyway/ui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Bibliothèque UI partagée des PWA onlyway (charte graphique commune). Source unique : importée, jamais copiée.",
   "license": "UNLICENSED",
   "private": true,

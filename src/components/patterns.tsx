@@ -24,7 +24,8 @@ import { Badge, Button, Card, Input } from "./ui";
 
 /* ------------------------------------------------------------ ThemeSelector
    Sélecteur Apparence : 3 segments à icônes (Système/Clair/Sombre).
-   Actif : border-brand bg-brand/10. */
+   Actif : couleurs inversées (bg-foreground / text-background) — convention
+   « sélectionné » de la charte : clair = fond noir/texte blanc, sombre = inverse. */
 const THEME_OPTIONS: { value: ThemeChoice; label: string; icon: LucideIcon }[] = [
   { value: "system", label: "Système", icon: Monitor },
   { value: "light", label: "Clair", icon: Sun },
@@ -50,10 +51,10 @@ export function ThemeSelector() {
             }}
             className={cn(
               "flex h-12 flex-col items-center justify-center gap-0.5 rounded-md border text-sm font-medium transition active:opacity-70",
-              on ? "border-brand bg-brand/10 text-foreground" : "border-border bg-card text-foreground",
+              on ? "border-foreground bg-foreground text-background" : "border-border bg-card text-foreground",
             )}
           >
-            <Icon className={cn("h-5 w-5", on ? "text-brand" : "text-muted-foreground")} />
+            <Icon className={cn("h-5 w-5", on ? "text-background" : "text-muted-foreground")} />
             {label}
           </button>
         );
