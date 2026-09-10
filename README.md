@@ -26,8 +26,8 @@ npm run build      # → dist/ (ESM + CJS + types)
 ## Installation dans une app (le jour de la migration)
 Trois options selon ton setup (repos séparés, pas de monorepo) :
 - **Registre privé** : `npm publish` puis `npm i @onlyway/ui` dans chaque app.
-- **Dépendance git** : `npm i git+https://github.com/s4yan64/onlyway-ui.git`
-- **Local (dev)** : `npm i file:../onlyway-ui` ou `npm link`.
+- **Dépendance git** : `npm i git+https://github.com/s4yan64/onlyway_ui.git`
+- **Local (dev)** : `npm i file:../onlyway_ui` ou `npm link`.
 
 ### Brancher les tokens + Tailwind (par app)
 1. Importer les tokens + la base une fois (ex. `main.tsx` / `app/layout.tsx`) :
