@@ -110,7 +110,7 @@
 }
 
 /* ============================================================================
-   MODE SOMBRE — base NEUTRE noir/gris (réf. dark mode pwa_callcenter).
+   MODE SOMBRE — base NEUTRE noir/gris (réf. dark mode pwa_call365).
    AUCUNE teinte sur les fonds/textes/bordures (chroma = 0). Seuls
    primary / brand / ring / statuts gardent de la couleur (bleu pâle).
    Activé par la classe .dark sur <html>.
@@ -157,12 +157,15 @@
    APRÈS l'import des tokens. C'est la seule différence visuelle entre apps.
    (Valeurs en canaux bruts « L C H », comme tout ce fichier.)
 
-   pwa_demenagement / pwa_callcenter  (bleu — valeur par défaut, rien à faire)
+   pwa_call365  (bleu — valeur par défaut, rien à faire)
 
    pwa_vertsapin (vert sapin) :
      :root  { --brand: 0.60 0.15 150; --ring: 0.60 0.15 150; }
      .dark  { --brand: 0.68 0.14 150; --ring: 0.68 0.14 150; }
 
-   pwa_gen_docs (piloté par business — brancher sur la palette active) :
+   pwa_devis365 (piloté par business — brancher sur la palette active) :
      :root  { --brand: <canaux L C H de la couleur secondaire du business>; }
+
+   (pwa_demenagement et pwa_gen_docs ont disparu le 10/09/2026 : fusionnés
+    dans pwa_devis365, qui reprend le pilotage par business.)
    ============================================================================ */
