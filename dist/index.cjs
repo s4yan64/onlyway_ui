@@ -31,6 +31,11 @@ __export(index_exports, {
   CardContent: () => CardContent,
   CardHeader: () => CardHeader,
   CardTitle: () => CardTitle,
+  Checkbox: () => Checkbox,
+  Dialog: () => Dialog,
+  DropdownMenu: () => DropdownMenu,
+  DropdownMenuItem: () => DropdownMenuItem,
+  DropdownMenuSeparator: () => DropdownMenuSeparator,
   FloatingMenu: () => FloatingMenu,
   FloatingMenuItem: () => FloatingMenuItem,
   HistoryRow: () => HistoryRow,
@@ -43,8 +48,20 @@ __export(index_exports, {
   Section: () => Section,
   Select: () => Select,
   SettingsPage: () => SettingsPage,
+  Switch: () => Switch,
   SyncSection: () => SyncSection,
   THEME_INIT_SCRIPT: () => THEME_INIT_SCRIPT,
+  Table: () => Table,
+  TableBody: () => TableBody,
+  TableCell: () => TableCell,
+  TableEmpty: () => TableEmpty,
+  TableHead: () => TableHead,
+  TableHeader: () => TableHeader,
+  TableRow: () => TableRow,
+  Tabs: () => Tabs,
+  TabsContent: () => TabsContent,
+  TabsList: () => TabsList,
+  TabsTrigger: () => TabsTrigger,
   Textarea: () => Textarea,
   ThemeSelector: () => ThemeSelector,
   applyThemeChoice: () => applyThemeChoice,
@@ -587,6 +604,303 @@ function FloatingMenuItem({
     }
   );
 }
+
+// src/components/controls.tsx
+var import_react3 = require("react");
+var import_lucide_react3 = require("lucide-react");
+var import_jsx_runtime4 = require("react/jsx-runtime");
+function Dialog({
+  open,
+  onClose,
+  title,
+  description,
+  footer,
+  children,
+  className
+}) {
+  const ref = (0, import_react3.useRef)(null);
+  const titreId = (0, import_react3.useId)();
+  const descId = (0, import_react3.useId)();
+  (0, import_react3.useEffect)(() => {
+    const d = ref.current;
+    if (!d) return;
+    if (open && !d.open) d.showModal();
+    else if (!open && d.open) d.close();
+  }, [open]);
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+    "dialog",
+    {
+      ref,
+      "aria-labelledby": titreId,
+      "aria-describedby": description ? descId : void 0,
+      onCancel: (e) => {
+        e.preventDefault();
+        onClose();
+      },
+      onClick: (e) => {
+        if (e.target === ref.current) onClose();
+      },
+      className: cn(
+        "w-[calc(100%-2rem)] max-w-lg rounded-lg border border-border bg-card p-0",
+        "text-card-foreground shadow-lg backdrop:bg-black/50",
+        className
+      ),
+      children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "max-h-[85vh] overflow-y-auto", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "border-b border-border px-5 py-4", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h2", { id: titreId, className: "text-lg font-semibold", children: title }),
+          description ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { id: descId, className: "mt-1 text-sm text-muted-foreground", children: description }) : null
+        ] }),
+        children ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "px-5 py-4", children }) : null,
+        footer ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "flex flex-col-reverse gap-2 border-t border-border px-5 py-4 sm:flex-row sm:justify-end", children: footer }) : null
+      ] })
+    }
+  );
+}
+var TabsCtx = (0, import_react3.createContext)(null);
+function useTabs(qui) {
+  const ctx = (0, import_react3.useContext)(TabsCtx);
+  if (!ctx) throw new Error(`<${qui}> doit \xEAtre rendu dans <Tabs>.`);
+  return ctx;
+}
+function Tabs({
+  value,
+  defaultValue,
+  onValueChange,
+  children,
+  className
+}) {
+  const [interne, setInterne] = (0, import_react3.useState)(defaultValue ?? "");
+  const nom = (0, import_react3.useId)();
+  const controle = value !== void 0;
+  const valeur = controle ? value : interne;
+  const choisir = (0, import_react3.useCallback)(
+    (v) => {
+      if (!controle) setInterne(v);
+      onValueChange?.(v);
+    },
+    [controle, onValueChange]
+  );
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(TabsCtx.Provider, { value: { valeur, choisir, nom }, children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className, children }) });
+}
+function TabsList({ className, children }) {
+  const ref = (0, import_react3.useRef)(null);
+  const onKeyDown = (e) => {
+    const pas = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+    if (pas === void 0 && e.key !== "Home" && e.key !== "End") return;
+    const onglets = Array.from(
+      ref.current?.querySelectorAll('[role="tab"]:not(:disabled)') ?? []
+    );
+    if (onglets.length === 0) return;
+    e.preventDefault();
+    const actuel = onglets.findIndex((o) => o === document.activeElement);
+    const cible = e.key === "Home" ? 0 : e.key === "End" ? onglets.length - 1 : (actuel + (pas ?? 0) + onglets.length) % onglets.length;
+    onglets[cible]?.focus();
+    onglets[cible]?.click();
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+    "div",
+    {
+      ref,
+      role: "tablist",
+      onKeyDown,
+      className: cn(
+        "inline-flex items-center gap-1 rounded-lg bg-muted p-1 text-muted-foreground",
+        className
+      ),
+      children
+    }
+  );
+}
+function TabsTrigger({
+  value,
+  className,
+  ...props
+}) {
+  const { valeur, choisir, nom } = useTabs("TabsTrigger");
+  const actif = valeur === value;
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+    "button",
+    {
+      type: "button",
+      role: "tab",
+      id: `${nom}-onglet-${value}`,
+      "aria-selected": actif,
+      "aria-controls": `${nom}-panneau-${value}`,
+      tabIndex: actif ? 0 : -1,
+      onClick: () => choisir(value),
+      className: cn(
+        // 44 px de haut : zone tactile confortable sur téléphone.
+        "inline-flex h-11 select-none items-center justify-center gap-2 rounded-md px-4",
+        "text-sm font-medium transition-colors",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "disabled:pointer-events-none disabled:opacity-50",
+        actif ? "bg-card text-foreground shadow-sm" : "hover:text-foreground",
+        className
+      ),
+      ...props
+    }
+  );
+}
+function TabsContent({
+  value,
+  className,
+  ...props
+}) {
+  const { valeur, nom } = useTabs("TabsContent");
+  if (valeur !== value) return null;
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+    "div",
+    {
+      role: "tabpanel",
+      id: `${nom}-panneau-${value}`,
+      "aria-labelledby": `${nom}-onglet-${value}`,
+      tabIndex: 0,
+      className: cn("mt-4 focus-visible:outline-none", className),
+      ...props
+    }
+  );
+}
+function Switch({
+  checked,
+  onCheckedChange,
+  disabled,
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+    "button",
+    {
+      type: "button",
+      role: "switch",
+      "aria-checked": checked,
+      disabled,
+      onClick: () => onCheckedChange(!checked),
+      className: cn(
+        "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "disabled:pointer-events-none disabled:opacity-50",
+        className
+      ),
+      ...props,
+      children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+        "span",
+        {
+          className: cn(
+            "pointer-events-none flex h-6 w-11 items-center rounded-full border-2 border-transparent transition-colors",
+            checked ? "bg-primary" : "bg-muted-foreground/30"
+          ),
+          children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+            "span",
+            {
+              className: cn(
+                "block h-5 w-5 rounded-full bg-card shadow-sm transition-transform",
+                checked ? "translate-x-5" : "translate-x-0"
+              )
+            }
+          )
+        }
+      )
+    }
+  );
+}
+function Checkbox({
+  checked,
+  onCheckedChange,
+  disabled,
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+    "button",
+    {
+      type: "button",
+      role: "checkbox",
+      "aria-checked": checked,
+      disabled,
+      onClick: () => onCheckedChange(!checked),
+      className: cn(
+        "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "disabled:pointer-events-none disabled:opacity-50",
+        className
+      ),
+      ...props,
+      children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+        "span",
+        {
+          className: cn(
+            "pointer-events-none flex h-5 w-5 items-center justify-center rounded border transition-colors",
+            checked ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card"
+          ),
+          children: checked ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_lucide_react3.Check, { className: "h-4 w-4", strokeWidth: 3 }) : null
+        }
+      )
+    }
+  );
+}
+function DropdownMenu({
+  trigger,
+  children,
+  className
+}) {
+  const [ancre, setAncre] = (0, import_react3.useState)(null);
+  const ref = (0, import_react3.useRef)(null);
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_jsx_runtime4.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+      "span",
+      {
+        ref,
+        className: cn("inline-flex", className),
+        onClick: () => {
+          const r = ref.current?.getBoundingClientRect();
+          if (r) setAncre({ x: r.left, y: r.bottom + 4 });
+        },
+        children: trigger
+      }
+    ),
+    ancre ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(FloatingMenu, { x: ancre.x, y: ancre.y, onClose: () => setAncre(null), children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { onClick: () => setAncre(null), children }) }) : null
+  ] });
+}
+var DropdownMenuItem = FloatingMenuItem;
+function DropdownMenuSeparator() {
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { role: "separator", className: "my-1 h-px bg-border" });
+}
+function Table({ className, ...props }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "w-full overflow-x-auto", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("table", { className: cn("w-full caption-bottom text-sm", className), ...props }) });
+}
+function TableHeader({ className, ...props }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("thead", { className: cn("[&_tr]:border-b [&_tr]:border-border", className), ...props });
+}
+function TableBody({ className, ...props }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("tbody", { className: cn("[&_tr:last-child]:border-0", className), ...props });
+}
+function TableRow({ className, ...props }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+    "tr",
+    {
+      className: cn("border-b border-border transition-colors hover:bg-muted/50", className),
+      ...props
+    }
+  );
+}
+function TableHead({ className, ...props }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+    "th",
+    {
+      className: cn(
+        "h-11 whitespace-nowrap px-3 text-left align-middle text-xs font-medium uppercase tracking-wide text-muted-foreground",
+        className
+      ),
+      ...props
+    }
+  );
+}
+function TableCell({ className, ...props }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("td", { className: cn("px-3 py-3 align-middle", className), ...props });
+}
+function TableEmpty({ colSpan, children }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("tr", { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("td", { colSpan, className: "px-3 py-10 text-center text-sm text-muted-foreground", children }) });
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   ActionBar,
@@ -599,6 +913,11 @@ function FloatingMenuItem({
   CardContent,
   CardHeader,
   CardTitle,
+  Checkbox,
+  Dialog,
+  DropdownMenu,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
   FloatingMenu,
   FloatingMenuItem,
   HistoryRow,
@@ -611,8 +930,20 @@ function FloatingMenuItem({
   Section,
   Select,
   SettingsPage,
+  Switch,
   SyncSection,
   THEME_INIT_SCRIPT,
+  Table,
+  TableBody,
+  TableCell,
+  TableEmpty,
+  TableHead,
+  TableHeader,
+  TableRow,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   Textarea,
   ThemeSelector,
   applyThemeChoice,

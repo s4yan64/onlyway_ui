@@ -5,13 +5,11 @@ Bibliothèque UI **partagée** des PWA onlyway (charte graphique commune).
 composants, on ne les **copie plus**. Un `<SettingsPage>` rendu ici est le **même code
 compilé** dans toutes les apps → zéro dérive possible.
 
-> ⚠️ Ce package n'est **pas encore branché** dans les apps. Il est prêt ; la migration
-> se fait quand tu veux (voir « Migration d'une app » plus bas). Aucune app n'est touchée.
-
 ## Contenu
 - **Primitives** : `Button` `Card` `CardHeader` `CardTitle` `CardContent` `Input` `Textarea` `Select` `Label` `Badge` `PageTitle`
 - **Layout** : `AppHeader` `PageContainer` `BottomNav` `ActionBar` `SaveButton` `AlertBanner` `PageHeaderRow` `Section` `SettingsPage`
 - **Patterns** : `ThemeSelector` `SyncSection` `HistoryRow` `FloatingMenu`
+- **Contrôles** : `Dialog` `Tabs` (`TabsList` `TabsTrigger` `TabsContent`) `Switch` `Checkbox` `DropdownMenu` (`DropdownMenuItem` `DropdownMenuSeparator`) `Table` (`TableHeader` `TableBody` `TableRow` `TableHead` `TableCell` `TableEmpty`)
 - **Logique** : `cn` · thème (`getThemeChoice` `setThemeChoice` `watchSystemTheme` `THEME_INIT_SCRIPT`) · `useLongPress`
 - **Tokens** : `@onlyway/ui/tokens.css` (couleurs OKLCH, typo, espaces, radius)
 
@@ -23,11 +21,41 @@ npm install
 npm run build      # → dist/ (ESM + CJS + types)
 ```
 
-## Installation dans une app (le jour de la migration)
-Trois options selon ton setup (repos séparés, pas de monorepo) :
-- **Registre privé** : `npm publish` puis `npm i @onlyway/ui` dans chaque app.
-- **Dépendance git** : `npm i git+https://github.com/s4yan64/onlyway_ui.git`
-- **Local (dev)** : `npm i file:../onlyway_ui` ou `npm link`.
+## Installation dans une app
+
+**Dépendance git, épinglée sur une étiquette de version** — c'est la voie canonique :
+
+```bash
+pnpm add "@onlyway/ui@github:s4yan64/onlyway_ui#v0.3.0"
+```
+
+⚠️ **Toujours épingler l'étiquette.** Sans `#vX.Y.Z`, l'installation suit `main` :
+deux déploiements du même commit d'app peuvent alors embarquer deux versions
+différentes de la charte, et la CI passe pendant que la production dérive.
+
+Pourquoi cette voie et pas un registre : GitHub Packages exige que la portée npm
+(`@onlyway`) corresponde au propriétaire du dépôt — ce qui demanderait une
+organisation GitHub `onlyway`. En attendant, le dépôt est **public** et le `dist`
+est **versionné dans git**, donc l'installation ne construit rien : elle clone et
+résout directement `dist/`. C'est ce qui la rend utilisable telle quelle sur
+Vercel, sans jeton ni `.npmrc`.
+
+> Le jour où une organisation `onlyway` existe, on publie sur un registre et on
+> remplace la dépendance git par `"@onlyway/ui": "^0.3.0"`. Rien d'autre ne bouge.
+
+- **En développement local** : `pnpm add file:../onlyway_ui` ou `pnpm link`.
+
+## ⚠️ Le `dist` est versionné — il se reconstruit à chaque modification
+
+C'est ce qui permet l'installation sans build. Le prix : `dist/` peut diverger de
+`src/` en silence. Après **toute** modification de `src/` :
+
+```bash
+npm run build && npm run verify && git add dist
+```
+
+L'intégration continue reconstruit et **refuse tout écart** — mais autant ne pas
+l'apprendre par un passage rouge.
 
 ### Brancher les tokens + Tailwind (par app)
 1. Importer les tokens + la base une fois (ex. `main.tsx` / `app/layout.tsx`) :

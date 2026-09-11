@@ -1,6 +1,6 @@
 import { ClassValue } from 'clsx';
 import * as react from 'react';
-import { HTMLAttributes, ButtonHTMLAttributes, InputHTMLAttributes, LabelHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes, ReactNode } from 'react';
+import { HTMLAttributes, ButtonHTMLAttributes, InputHTMLAttributes, LabelHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes, ReactNode, TdHTMLAttributes, ThHTMLAttributes } from 'react';
 import { LucideIcon } from 'lucide-react';
 
 declare function cn(...inputs: ClassValue[]): string;
@@ -118,4 +118,57 @@ declare function FloatingMenu({ x, y, onClose, children, }: {
 }): react.JSX.Element;
 declare function FloatingMenuItem({ className, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>): react.JSX.Element;
 
-export { ActionBar, AlertBanner, AppHeader, Badge, BottomNav, Button, Card, CardContent, CardHeader, CardTitle, FloatingMenu, FloatingMenuItem, HistoryRow, Input, Label, type NavItem, PageContainer, PageHeaderRow, PageTitle, SaveButton, Section, Select, SettingsPage, SyncSection, THEME_INIT_SCRIPT, Textarea, type ThemeChoice, ThemeSelector, applyThemeChoice, cn, getThemeChoice, resolvesToDark, setThemeChoice, useLongPress, watchSystemTheme };
+declare function Dialog({ open, onClose, title, description, footer, children, className, }: {
+    open: boolean;
+    onClose: () => void;
+    title: ReactNode;
+    description?: ReactNode;
+    footer?: ReactNode;
+    children?: ReactNode;
+    className?: string;
+}): react.JSX.Element;
+declare function Tabs({ value, defaultValue, onValueChange, children, className, }: {
+    value?: string;
+    defaultValue?: string;
+    onValueChange?: (v: string) => void;
+    children: ReactNode;
+    className?: string;
+}): react.JSX.Element;
+declare function TabsList({ className, children }: {
+    className?: string;
+    children: ReactNode;
+}): react.JSX.Element;
+declare function TabsTrigger({ value, className, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & {
+    value: string;
+}): react.JSX.Element;
+declare function TabsContent({ value, className, ...props }: HTMLAttributes<HTMLDivElement> & {
+    value: string;
+}): react.JSX.Element | null;
+declare function Switch({ checked, onCheckedChange, disabled, className, ...props }: Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onChange" | "value"> & {
+    checked: boolean;
+    onCheckedChange: (v: boolean) => void;
+}): react.JSX.Element;
+declare function Checkbox({ checked, onCheckedChange, disabled, className, ...props }: Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onChange" | "value"> & {
+    checked: boolean;
+    onCheckedChange: (v: boolean) => void;
+}): react.JSX.Element;
+declare function DropdownMenu({ trigger, children, className, }: {
+    trigger: ReactNode;
+    children: ReactNode;
+    className?: string;
+}): react.JSX.Element;
+declare const DropdownMenuItem: typeof FloatingMenuItem;
+declare function DropdownMenuSeparator(): react.JSX.Element;
+declare function Table({ className, ...props }: HTMLAttributes<HTMLTableElement>): react.JSX.Element;
+declare function TableHeader({ className, ...props }: HTMLAttributes<HTMLTableSectionElement>): react.JSX.Element;
+declare function TableBody({ className, ...props }: HTMLAttributes<HTMLTableSectionElement>): react.JSX.Element;
+declare function TableRow({ className, ...props }: HTMLAttributes<HTMLTableRowElement>): react.JSX.Element;
+declare function TableHead({ className, ...props }: ThHTMLAttributes<HTMLTableCellElement>): react.JSX.Element;
+declare function TableCell({ className, ...props }: TdHTMLAttributes<HTMLTableCellElement>): react.JSX.Element;
+/** Ligne « rien à afficher » — un tableau vide sans message ressemble à une panne. */
+declare function TableEmpty({ colSpan, children }: {
+    colSpan: number;
+    children: ReactNode;
+}): react.JSX.Element;
+
+export { ActionBar, AlertBanner, AppHeader, Badge, BottomNav, Button, Card, CardContent, CardHeader, CardTitle, Checkbox, Dialog, DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, FloatingMenu, FloatingMenuItem, HistoryRow, Input, Label, type NavItem, PageContainer, PageHeaderRow, PageTitle, SaveButton, Section, Select, SettingsPage, Switch, SyncSection, THEME_INIT_SCRIPT, Table, TableBody, TableCell, TableEmpty, TableHead, TableHeader, TableRow, Tabs, TabsContent, TabsList, TabsTrigger, Textarea, type ThemeChoice, ThemeSelector, applyThemeChoice, cn, getThemeChoice, resolvesToDark, setThemeChoice, useLongPress, watchSystemTheme };

@@ -1,0 +1,44 @@
+# Le `dist` est VERSIONNÉ dans ce dépôt — c'est ce qui permet de l'installer
+# comme dépendance git sans build à l'installation (Vercel, CI des apps).
+#
+# ⚠️ Un artefact de build versionné peut DIVERGER de sa source sans que rien ne
+# le signale : on modifie `src`, on oublie `npm run build`, et les apps
+# continuent d'installer l'ancien code en silence. Ce passage existe pour rendre
+# cette divergence impossible : il reconstruit et refuse tout écart.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Types
+        run: npm run typecheck
+
+      - name: Reconstruire le dist
+        run: npm run build
+
+      - name: Le dist publié porte-t-il ce qu'il doit porter ?
+        run: npm run verify
+
+      - name: Le dist versionné est-il à jour avec les sources ?
+        run: |
+          if ! git diff --exit-code --stat -- dist; then
+            echo ""
+            echo "::error::Le dist versionné ne correspond plus aux sources."
+            echo "Lancer 'npm run build' et committer dist/ avec la modification."
+            exit 1
+          fi
+          echo "dist a jour"

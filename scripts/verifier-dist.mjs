@@ -53,6 +53,22 @@ for (const e of [
   "ThemeSelector",
   "THEME_INIT_SCRIPT",
   "cn",
+  "Dialog",
+  "Tabs",
+  "TabsList",
+  "TabsTrigger",
+  "TabsContent",
+  "Switch",
+  "Checkbox",
+  "DropdownMenu",
+  "DropdownMenuItem",
+  "Table",
+  "TableHeader",
+  "TableBody",
+  "TableRow",
+  "TableHead",
+  "TableCell",
+  "TableEmpty",
 ]) {
   src.includes(e) ? ok(`export ${e}`) : ko(`export ${e} introuvable`);
 }

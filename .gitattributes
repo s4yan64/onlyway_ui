@@ -1,0 +1,4 @@
+# Le `dist` est versionne et compare octet a octet par la CI apres
+# reconstruction. Sans normalisation explicite, Windows et Linux ne produisent
+# pas le meme contenu indexe, et le garde-fou devient rouge sans raison.
+* text=auto eol=lf

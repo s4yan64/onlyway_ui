@@ -5,3 +5,4 @@ export * from "./lib/useLongPress";
 export * from "./components/ui";
 export * from "./components/layout";
 export * from "./components/patterns";
+export * from "./components/controls";
