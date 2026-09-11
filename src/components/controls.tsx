@@ -79,7 +79,11 @@ export function Dialog({
         if (e.target === ref.current) onClose();
       }}
       className={cn(
-        "w-[calc(100%-2rem)] max-w-lg rounded-lg border border-border bg-card p-0",
+        // ⚠️ `m-auto` est INDISPENSABLE et non décoratif : un <dialog> modal se
+        // centre grâce au `margin: auto` de la feuille de style du navigateur,
+        // que le preflight de Tailwind v4 écrase en `margin: 0` sur TOUS les
+        // éléments. Sans lui, le dialogue s'ancre en haut à gauche de l'écran.
+        "m-auto w-[calc(100%-2rem)] max-w-lg rounded-lg border border-border bg-card p-0",
         "text-card-foreground shadow-lg backdrop:bg-black/50",
         className,
       )}
