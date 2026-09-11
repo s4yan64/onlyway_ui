@@ -14,7 +14,10 @@ import { Button, PageTitle } from "./ui";
    Next.js : remplacer <img> par next/image. */
 export function AppHeader({ appName, logoSrc }: { appName: string; logoSrc: string }) {
   return (
-    <header className="safe-top sticky top-0 z-30 h-14 border-b border-border bg-background/85 backdrop-blur-md">
+    // `min-h-14` et non `h-14` : en border-box, le padding de zone sûre
+    // mangerait la hauteur au lieu de l'ajouter, et le titre passerait sous
+    // l'encoche de l'iPhone.
+    <header className="safe-top sticky top-0 z-30 min-h-14 border-b border-border bg-background/85 backdrop-blur-md">
       <div className="mx-auto flex h-14 w-full max-w-content items-center gap-2.5 px-4">
         <img src={logoSrc} alt="" className="h-7 w-7 shrink-0 rounded-md" />
         <span className="text-base font-semibold text-foreground">{appName}</span>

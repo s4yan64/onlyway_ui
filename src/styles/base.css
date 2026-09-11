@@ -25,3 +25,22 @@ a,
 /* Le bottom nav est TOUJOURS fixé en bas (lock) — déjà porté par le composant
    <BottomNav> (fixed inset-x-0 bottom-0). Prévoir un padding-bas au contenu
    (PageContainer = pb-24) pour qu'il ne passe pas dessous. */
+
+/* ============================================================================
+   ZONES SÛRES iOS — `safe-top` / `safe-bottom`
+   ----------------------------------------------------------------------------
+   ⚠️ CES CLASSES SONT UTILISÉES PAR LES COMPOSANTS DE CE PAQUET (<AppHeader>,
+   <BottomNav>, <FloatingMenu>). Elles vivent donc ICI, et non dans chaque app :
+   une app qui oubliait de les recopier voyait sa barre du bas passer SOUS
+   l'indicateur d'accueil de l'iPhone — bouton invisible, et rien pour le dire.
+
+   Du CSS nu, volontairement : `@utility` n'existe qu'en Tailwind v4, alors que
+   ce paquet sert aussi des apps en v3.
+   ============================================================================ */
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}

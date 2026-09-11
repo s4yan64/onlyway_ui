@@ -40,6 +40,18 @@ for (const f of ["src/styles/design-tokens.css", "src/styles/base.css"]) {
   existsSync(f) ? ok(f) : ko(`${f} manquant`);
 }
 
+// Les composants du paquet utilisent `safe-top` / `safe-bottom`. Ces classes
+// ne sont PAS des utilitaires Tailwind : si base.css cesse de les définir, la
+// barre du bas repasse sous l'indicateur d'accueil de l'iPhone, sans erreur.
+const base = existsSync("src/styles/base.css") ? readFileSync("src/styles/base.css", "utf8") : "";
+const dist = existsSync("dist/index.js") ? readFileSync("dist/index.js", "utf8") : "";
+for (const classe of ["safe-top", "safe-bottom"]) {
+  if (!dist.includes(classe)) continue; // non utilisée : rien à garantir
+  base.includes(`.${classe}`)
+    ? ok(`.${classe} définie dans base.css`)
+    : ko(`.${classe} utilisée par un composant mais ABSENTE de base.css`);
+}
+
 // Un échantillon d'exports : si le point d'entrée a changé de forme, on le sait.
 const src = existsSync("dist/index.js") ? readFileSync("dist/index.js", "utf8") : "";
 for (const e of [

@@ -287,10 +287,15 @@ function PageTitle({ className, ...props }) {
 var import_lucide_react = require("lucide-react");
 var import_jsx_runtime2 = require("react/jsx-runtime");
 function AppHeader({ appName, logoSrc }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("header", { className: "safe-top sticky top-0 z-30 h-14 border-b border-border bg-background/85 backdrop-blur-md", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "mx-auto flex h-14 w-full max-w-content items-center gap-2.5 px-4", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("img", { src: logoSrc, alt: "", className: "h-7 w-7 shrink-0 rounded-md" }),
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "text-base font-semibold text-foreground", children: appName })
-  ] }) });
+  return (
+    // `min-h-14` et non `h-14` : en border-box, le padding de zone sûre
+    // mangerait la hauteur au lieu de l'ajouter, et le titre passerait sous
+    // l'encoche de l'iPhone.
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("header", { className: "safe-top sticky top-0 z-30 min-h-14 border-b border-border bg-background/85 backdrop-blur-md", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "mx-auto flex h-14 w-full max-w-content items-center gap-2.5 px-4", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("img", { src: logoSrc, alt: "", className: "h-7 w-7 shrink-0 rounded-md" }),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "text-base font-semibold text-foreground", children: appName })
+    ] }) })
+  );
 }
 function PageContainer({ children, className }) {
   return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("main", { className: cn("mx-auto w-full max-w-content px-4 pb-24 pt-4", className), children });

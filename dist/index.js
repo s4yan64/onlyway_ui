@@ -213,10 +213,15 @@ function PageTitle({ className, ...props }) {
 import { AlertCircle, AlertTriangle, CheckCircle2, Info, Save, X } from "lucide-react";
 import { jsx as jsx2, jsxs } from "react/jsx-runtime";
 function AppHeader({ appName, logoSrc }) {
-  return /* @__PURE__ */ jsx2("header", { className: "safe-top sticky top-0 z-30 h-14 border-b border-border bg-background/85 backdrop-blur-md", children: /* @__PURE__ */ jsxs("div", { className: "mx-auto flex h-14 w-full max-w-content items-center gap-2.5 px-4", children: [
-    /* @__PURE__ */ jsx2("img", { src: logoSrc, alt: "", className: "h-7 w-7 shrink-0 rounded-md" }),
-    /* @__PURE__ */ jsx2("span", { className: "text-base font-semibold text-foreground", children: appName })
-  ] }) });
+  return (
+    // `min-h-14` et non `h-14` : en border-box, le padding de zone sûre
+    // mangerait la hauteur au lieu de l'ajouter, et le titre passerait sous
+    // l'encoche de l'iPhone.
+    /* @__PURE__ */ jsx2("header", { className: "safe-top sticky top-0 z-30 min-h-14 border-b border-border bg-background/85 backdrop-blur-md", children: /* @__PURE__ */ jsxs("div", { className: "mx-auto flex h-14 w-full max-w-content items-center gap-2.5 px-4", children: [
+      /* @__PURE__ */ jsx2("img", { src: logoSrc, alt: "", className: "h-7 w-7 shrink-0 rounded-md" }),
+      /* @__PURE__ */ jsx2("span", { className: "text-base font-semibold text-foreground", children: appName })
+    ] }) })
+  );
 }
 function PageContainer({ children, className }) {
   return /* @__PURE__ */ jsx2("main", { className: cn("mx-auto w-full max-w-content px-4 pb-24 pt-4", className), children });
