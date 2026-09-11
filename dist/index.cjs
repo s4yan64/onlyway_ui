@@ -305,24 +305,31 @@ function BottomNav({
   active,
   onNavigate
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("nav", { className: "safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/85 backdrop-blur-md", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("ul", { className: "mx-auto grid w-full max-w-content grid-cols-3", children: items.map(({ key, label, icon: Icon }) => {
-    const on = key === active;
-    return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
-      "button",
-      {
-        type: "button",
-        onClick: () => onNavigate(key),
-        className: cn(
-          "flex min-h-[56px] w-full flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors",
-          on ? "text-brand" : "text-muted-foreground"
-        ),
-        children: [
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Icon, { className: "h-5 w-5" }),
-          label
-        ]
-      }
-    ) }, key);
-  }) }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("nav", { className: "safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/85 backdrop-blur-md", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+    "ul",
+    {
+      className: "mx-auto grid w-full max-w-content",
+      style: { gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` },
+      children: items.map(({ key, label, icon: Icon }) => {
+        const on = key === active;
+        return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
+          "button",
+          {
+            type: "button",
+            onClick: () => onNavigate(key),
+            className: cn(
+              "flex min-h-[56px] w-full flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors",
+              on ? "text-brand" : "text-muted-foreground"
+            ),
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Icon, { className: "h-5 w-5" }),
+              label
+            ]
+          }
+        ) }, key);
+      })
+    }
+  ) });
 }
 function ActionBar({ children }) {
   return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "safe-bottom fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background/85 px-4 py-3 backdrop-blur-md", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "mx-auto flex w-full max-w-content items-center gap-2", children }) });

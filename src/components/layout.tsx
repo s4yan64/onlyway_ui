@@ -53,7 +53,15 @@ export function BottomNav({
 }) {
   return (
     <nav className="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/85 backdrop-blur-md">
-      <ul className="mx-auto grid w-full max-w-content grid-cols-3">
+      {/* ⚠️ Le nombre de colonnes SUIT le nombre d'entrées, il ne se décide pas
+          ici : `grid-cols-3` en dur renvoyait la quatrième entrée à la ligne,
+          sous la barre, hors de l'écran. Et il ne peut pas être une classe
+          Tailwind calculée — le compilateur ne voit que les classes écrites en
+          toutes lettres, `grid-cols-${n}` ne serait jamais généré. */}
+      <ul
+        className="mx-auto grid w-full max-w-content"
+        style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}
+      >
         {items.map(({ key, label, icon: Icon }) => {
           const on = key === active;
           return (
