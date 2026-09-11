@@ -1,13 +1,67 @@
-'use strict';
+"use client";
+"use strict";
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-var clsx = require('clsx');
-var tailwindMerge = require('tailwind-merge');
-var react = require('react');
-var jsxRuntime = require('react/jsx-runtime');
-var lucideReact = require('lucide-react');
+// src/index.ts
+var index_exports = {};
+__export(index_exports, {
+  ActionBar: () => ActionBar,
+  AlertBanner: () => AlertBanner,
+  AppHeader: () => AppHeader,
+  Badge: () => Badge,
+  BottomNav: () => BottomNav,
+  Button: () => Button,
+  Card: () => Card,
+  CardContent: () => CardContent,
+  CardHeader: () => CardHeader,
+  CardTitle: () => CardTitle,
+  FloatingMenu: () => FloatingMenu,
+  FloatingMenuItem: () => FloatingMenuItem,
+  HistoryRow: () => HistoryRow,
+  Input: () => Input,
+  Label: () => Label,
+  PageContainer: () => PageContainer,
+  PageHeaderRow: () => PageHeaderRow,
+  PageTitle: () => PageTitle,
+  SaveButton: () => SaveButton,
+  Section: () => Section,
+  Select: () => Select,
+  SettingsPage: () => SettingsPage,
+  SyncSection: () => SyncSection,
+  THEME_INIT_SCRIPT: () => THEME_INIT_SCRIPT,
+  Textarea: () => Textarea,
+  ThemeSelector: () => ThemeSelector,
+  applyThemeChoice: () => applyThemeChoice,
+  cn: () => cn,
+  getThemeChoice: () => getThemeChoice,
+  resolvesToDark: () => resolvesToDark,
+  setThemeChoice: () => setThemeChoice,
+  useLongPress: () => useLongPress,
+  watchSystemTheme: () => watchSystemTheme
+});
+module.exports = __toCommonJS(index_exports);
 
+// src/lib/cn.ts
+var import_clsx = require("clsx");
+var import_tailwind_merge = require("tailwind-merge");
 function cn(...inputs) {
-  return tailwindMerge.twMerge(clsx.clsx(inputs));
+  return (0, import_tailwind_merge.twMerge)((0, import_clsx.clsx)(inputs));
 }
 
 // src/lib/theme.ts
@@ -36,17 +90,20 @@ function watchSystemTheme() {
   return () => mq.removeEventListener("change", handler);
 }
 var THEME_INIT_SCRIPT = "(function(){try{var t=localStorage.getItem('theme')||'system';var d=t==='dark'||(t==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();";
+
+// src/lib/useLongPress.ts
+var import_react = require("react");
 function useLongPress(callback, { delay = 500, moveThreshold = 10 } = {}) {
-  const timeoutRef = react.useRef(null);
-  const triggeredRef = react.useRef(false);
-  const startPosRef = react.useRef(null);
-  const cancel = react.useCallback(() => {
+  const timeoutRef = (0, import_react.useRef)(null);
+  const triggeredRef = (0, import_react.useRef)(false);
+  const startPosRef = (0, import_react.useRef)(null);
+  const cancel = (0, import_react.useCallback)(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
   }, []);
-  const start = react.useCallback(
+  const start = (0, import_react.useCallback)(
     (e) => {
       triggeredRef.current = false;
       startPosRef.current = { x: e.clientX, y: e.clientY };
@@ -57,7 +114,7 @@ function useLongPress(callback, { delay = 500, moveThreshold = 10 } = {}) {
     },
     [callback, delay]
   );
-  const move = react.useCallback(
+  const move = (0, import_react.useCallback)(
     (e) => {
       const s = startPosRef.current;
       if (!s) return;
@@ -76,6 +133,9 @@ function useLongPress(callback, { delay = 500, moveThreshold = 10 } = {}) {
     shouldIgnoreClick: () => triggeredRef.current
   };
 }
+
+// src/components/ui.tsx
+var import_jsx_runtime = require("react/jsx-runtime");
 var BTN_VARIANT = {
   primary: "bg-primary text-primary-foreground hover:opacity-90",
   secondary: "bg-secondary text-secondary-foreground border border-border hover:bg-muted",
@@ -96,7 +156,7 @@ function Button({
   className,
   ...props
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
     "button",
     {
       className: cn(
@@ -112,7 +172,7 @@ function Button({
   );
 }
 function Card({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
     "div",
     {
       className: cn(
@@ -124,16 +184,16 @@ function Card({ className, ...props }) {
   );
 }
 function CardHeader({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntime.jsx("div", { className: cn("flex flex-col gap-1 p-4 pb-2", className), ...props });
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: cn("flex flex-col gap-1 p-4 pb-2", className), ...props });
 }
 function CardTitle({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntime.jsx("h3", { className: cn("text-base font-semibold", className), ...props });
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { className: cn("text-base font-semibold", className), ...props });
 }
 function CardContent({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntime.jsx("div", { className: cn("p-4 pt-0", className), ...props });
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: cn("p-4 pt-0", className), ...props });
 }
 function Input({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
     "input",
     {
       className: cn(
@@ -148,7 +208,7 @@ function Input({ className, ...props }) {
   );
 }
 function Textarea({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
     "textarea",
     {
       className: cn(
@@ -163,7 +223,7 @@ function Textarea({ className, ...props }) {
   );
 }
 function Select({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
     "select",
     {
       className: cn(
@@ -176,7 +236,7 @@ function Select({ className, ...props }) {
   );
 }
 function Label({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntime.jsx("label", { className: cn("text-sm font-medium", className), ...props });
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { className: cn("text-sm font-medium", className), ...props });
 }
 var BADGE = {
   default: "bg-muted text-muted-foreground",
@@ -190,7 +250,7 @@ function Badge({
   className,
   ...props
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
     "span",
     {
       className: cn(
@@ -203,25 +263,29 @@ function Badge({
   );
 }
 function PageTitle({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntime.jsx("h1", { className: cn("text-2xl font-bold", className), ...props });
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", { className: cn("text-2xl font-bold", className), ...props });
 }
+
+// src/components/layout.tsx
+var import_lucide_react = require("lucide-react");
+var import_jsx_runtime2 = require("react/jsx-runtime");
 function AppHeader({ appName, logoSrc }) {
-  return /* @__PURE__ */ jsxRuntime.jsx("header", { className: "safe-top sticky top-0 z-30 h-14 border-b border-border bg-background/85 backdrop-blur-md", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mx-auto flex h-14 w-full max-w-content items-center gap-2.5 px-4", children: [
-    /* @__PURE__ */ jsxRuntime.jsx("img", { src: logoSrc, alt: "", className: "h-7 w-7 shrink-0 rounded-md" }),
-    /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-base font-semibold text-foreground", children: appName })
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("header", { className: "safe-top sticky top-0 z-30 h-14 border-b border-border bg-background/85 backdrop-blur-md", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "mx-auto flex h-14 w-full max-w-content items-center gap-2.5 px-4", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("img", { src: logoSrc, alt: "", className: "h-7 w-7 shrink-0 rounded-md" }),
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "text-base font-semibold text-foreground", children: appName })
   ] }) });
 }
 function PageContainer({ children, className }) {
-  return /* @__PURE__ */ jsxRuntime.jsx("main", { className: cn("mx-auto w-full max-w-content px-4 pb-24 pt-4", className), children });
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("main", { className: cn("mx-auto w-full max-w-content px-4 pb-24 pt-4", className), children });
 }
 function BottomNav({
   items,
   active,
   onNavigate
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsx("nav", { className: "safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/85 backdrop-blur-md", children: /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "mx-auto grid w-full max-w-content grid-cols-3", children: items.map(({ key, label, icon: Icon }) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("nav", { className: "safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/85 backdrop-blur-md", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("ul", { className: "mx-auto grid w-full max-w-content grid-cols-3", children: items.map(({ key, label, icon: Icon }) => {
     const on = key === active;
-    return /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsxs(
+    return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
       "button",
       {
         type: "button",
@@ -231,7 +295,7 @@ function BottomNav({
           on ? "text-brand" : "text-muted-foreground"
         ),
         children: [
-          /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: "h-5 w-5" }),
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Icon, { className: "h-5 w-5" }),
           label
         ]
       }
@@ -239,19 +303,19 @@ function BottomNav({
   }) }) });
 }
 function ActionBar({ children }) {
-  return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "safe-bottom fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background/85 px-4 py-3 backdrop-blur-md", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mx-auto flex w-full max-w-content items-center gap-2", children }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "safe-bottom fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background/85 px-4 py-3 backdrop-blur-md", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "mx-auto flex w-full max-w-content items-center gap-2", children }) });
 }
 function SaveButton(props) {
-  return /* @__PURE__ */ jsxRuntime.jsxs(Button, { size: "lg", className: "h-11 flex-1 font-semibold", ...props, children: [
-    /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Save, { className: "h-4 w-4" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(Button, { size: "lg", className: "h-11 flex-1 font-semibold", ...props, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_lucide_react.Save, { className: "h-4 w-4" }),
     " Enregistrer"
   ] });
 }
 var ALERT = {
-  success: { cls: "bg-success/15 text-success border-success/30", Icon: lucideReact.CheckCircle2 },
-  error: { cls: "bg-destructive/15 text-destructive border-destructive/30", Icon: lucideReact.AlertCircle },
-  warning: { cls: "bg-warning/15 text-warning border-warning/30", Icon: lucideReact.AlertTriangle },
-  info: { cls: "bg-info/15 text-info border-info/30", Icon: lucideReact.Info }
+  success: { cls: "bg-success/15 text-success border-success/30", Icon: import_lucide_react.CheckCircle2 },
+  error: { cls: "bg-destructive/15 text-destructive border-destructive/30", Icon: import_lucide_react.AlertCircle },
+  warning: { cls: "bg-warning/15 text-warning border-warning/30", Icon: import_lucide_react.AlertTriangle },
+  info: { cls: "bg-info/15 text-info border-info/30", Icon: import_lucide_react.Info }
 };
 function AlertBanner({
   variant = "info",
@@ -259,7 +323,7 @@ function AlertBanner({
   onClose
 }) {
   const { cls, Icon } = ALERT[variant];
-  return /* @__PURE__ */ jsxRuntime.jsxs(
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
     "div",
     {
       role: "status",
@@ -268,16 +332,16 @@ function AlertBanner({
         cls
       ),
       children: [
-        /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: "h-4 w-4 shrink-0" }),
-        /* @__PURE__ */ jsxRuntime.jsx("span", { className: "min-w-0 flex-1", children }),
-        onClose && /* @__PURE__ */ jsxRuntime.jsx("button", { type: "button", onClick: onClose, "aria-label": "Fermer", className: "opacity-70", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.X, { className: "h-4 w-4" }) })
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Icon, { className: "h-4 w-4 shrink-0" }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "min-w-0 flex-1", children }),
+        onClose && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "button", onClick: onClose, "aria-label": "Fermer", className: "opacity-70", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_lucide_react.X, { className: "h-4 w-4" }) })
       ]
     }
   );
 }
 function PageHeaderRow({ title, action }) {
-  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mb-6 flex items-center justify-between gap-3", children: [
-    /* @__PURE__ */ jsxRuntime.jsx(PageTitle, { children: title }),
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "mb-6 flex items-center justify-between gap-3", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(PageTitle, { children: title }),
     action
   ] });
 }
@@ -286,32 +350,37 @@ function Section({
   description,
   children
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "flex flex-col gap-3", children: [
-    /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-sm font-semibold uppercase tracking-wide text-muted-foreground", children: title }),
-    description && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: description }),
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("section", { className: "flex flex-col gap-3", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h2", { className: "text-sm font-semibold uppercase tracking-wide text-muted-foreground", children: title }),
+    description && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "text-sm text-muted-foreground", children: description }),
     children
   ] });
 }
 function SettingsPage({ children }) {
-  return /* @__PURE__ */ jsxRuntime.jsxs(PageContainer, { className: "flex flex-col gap-6", children: [
-    /* @__PURE__ */ jsxRuntime.jsx(PageTitle, { children: "R\xE9glages" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(PageContainer, { className: "flex flex-col gap-6", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(PageTitle, { children: "R\xE9glages" }),
     children
   ] });
 }
+
+// src/components/patterns.tsx
+var import_react2 = require("react");
+var import_lucide_react2 = require("lucide-react");
+var import_jsx_runtime3 = require("react/jsx-runtime");
 var THEME_OPTIONS = [
-  { value: "system", label: "Syst\xE8me", icon: lucideReact.Monitor },
-  { value: "light", label: "Clair", icon: lucideReact.Sun },
-  { value: "dark", label: "Sombre", icon: lucideReact.Moon }
+  { value: "system", label: "Syst\xE8me", icon: import_lucide_react2.Monitor },
+  { value: "light", label: "Clair", icon: import_lucide_react2.Sun },
+  { value: "dark", label: "Sombre", icon: import_lucide_react2.Moon }
 ];
 function ThemeSelector() {
-  const [choice, setChoice] = react.useState("system");
-  react.useEffect(() => {
+  const [choice, setChoice] = (0, import_react2.useState)("system");
+  (0, import_react2.useEffect)(() => {
     setChoice(getThemeChoice());
     return watchSystemTheme();
   }, []);
-  return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-3 gap-2", children: THEME_OPTIONS.map(({ value, label, icon: Icon }) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "grid grid-cols-3 gap-2", children: THEME_OPTIONS.map(({ value, label, icon: Icon }) => {
     const on = choice === value;
-    return /* @__PURE__ */ jsxRuntime.jsxs(
+    return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(
       "button",
       {
         type: "button",
@@ -324,7 +393,7 @@ function ThemeSelector() {
           on ? "border-foreground bg-foreground text-background" : "border-border bg-card text-foreground"
         ),
         children: [
-          /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: cn("h-5 w-5", on ? "text-background" : "text-muted-foreground") }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Icon, { className: cn("h-5 w-5", on ? "text-background" : "text-muted-foreground") }),
           label
         ]
       },
@@ -338,36 +407,36 @@ function SyncSection({
   onConnect,
   onDisconnect
 }) {
-  const [pwd, setPwd] = react.useState("");
-  const [busy, setBusy] = react.useState(false);
+  const [pwd, setPwd] = (0, import_react2.useState)("");
+  const [busy, setBusy] = (0, import_react2.useState)(false);
   if (state === "unavailable") {
-    return /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "flex items-center gap-2 text-sm text-muted-foreground", children: [
-      /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CloudOff, { className: "h-4 w-4" }),
+    return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { className: "flex items-center gap-2 text-sm text-muted-foreground", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_lucide_react2.CloudOff, { className: "h-4 w-4" }),
       " Synchronisation non disponible."
     ] });
   }
   if (state === "loading") {
-    return /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "flex items-center gap-2 text-sm text-muted-foreground", children: [
-      /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Loader2, { className: "h-4 w-4 animate-spin" }),
+    return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { className: "flex items-center gap-2 text-sm text-muted-foreground", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_lucide_react2.Loader2, { className: "h-4 w-4 animate-spin" }),
       " V\xE9rification\u2026"
     ] });
   }
   if (state === "connected") {
-    return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col gap-3", children: [
-      /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "flex items-center gap-2 text-sm text-success", children: [
-        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "h-4 w-4" }),
+    return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "flex flex-col gap-3", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { className: "flex items-center gap-2 text-sm text-success", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_lucide_react2.CheckCircle2, { className: "h-4 w-4" }),
         " Synchronisation active."
       ] }),
-      /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "outline", className: "w-fit", onClick: onDisconnect, children: [
-        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.LogOut, { className: "h-4 w-4" }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(Button, { variant: "outline", className: "w-fit", onClick: onDisconnect, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_lucide_react2.LogOut, { className: "h-4 w-4" }),
         " Se d\xE9connecter"
       ] })
     ] });
   }
-  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col gap-3", children: [
-    /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Tes donn\xE9es sont en local sur cet appareil. Connecte-toi pour les synchroniser." }),
-    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col gap-2 sm:flex-row", children: [
-      /* @__PURE__ */ jsxRuntime.jsx(
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "flex flex-col gap-3", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "text-sm text-muted-foreground", children: "Tes donn\xE9es sont en local sur cet appareil. Connecte-toi pour les synchroniser." }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "flex flex-col gap-2 sm:flex-row", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
         Input,
         {
           type: "password",
@@ -379,7 +448,7 @@ function SyncSection({
           className: "sm:max-w-xs"
         }
       ),
-      /* @__PURE__ */ jsxRuntime.jsx(
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
         Button,
         {
           disabled: !pwd || busy,
@@ -395,7 +464,7 @@ function SyncSection({
         }
       )
     ] }),
-    error && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-destructive", children: error })
+    error && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "text-sm text-destructive", children: error })
   ] });
 }
 function HistoryRow({
@@ -408,7 +477,7 @@ function HistoryRow({
   onMenu
 }) {
   const longPress = useLongPress((e) => onMenu(e.clientX, e.clientY));
-  return /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsx(
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
     "div",
     {
       role: "button",
@@ -432,20 +501,20 @@ function HistoryRow({
       onPointerCancel: longPress.onPointerCancel,
       className: "block cursor-pointer select-none rounded-lg border border-border bg-card p-4 transition-colors hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring md:select-text",
       style: { WebkitTouchCallout: "none" },
-      children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-start justify-between gap-3", children: [
-        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "min-w-0 flex-1 space-y-1.5", children: [
-          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-wrap items-center gap-x-3 gap-y-1", children: [
-            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "font-semibold", children: title }),
+      children: /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "flex items-start justify-between gap-3", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "min-w-0 flex-1 space-y-1.5", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "flex flex-wrap items-center gap-x-3 gap-y-1", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "font-semibold", children: title }),
             badge
           ] }),
-          lines && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-sm text-muted-foreground", children: lines })
+          lines && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "text-sm text-muted-foreground", children: lines })
         ] }),
-        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex shrink-0 flex-col items-end justify-between gap-2 self-stretch", children: [
-          amount !== void 0 && /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "whitespace-nowrap text-right", children: [
-            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-lg font-semibold", children: amount }),
-            amountLabel && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs text-muted-foreground", children: amountLabel })
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "flex shrink-0 flex-col items-end justify-between gap-2 self-stretch", children: [
+          amount !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "whitespace-nowrap text-right", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "text-lg font-semibold", children: amount }),
+            amountLabel && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "text-xs text-muted-foreground", children: amountLabel })
           ] }),
-          /* @__PURE__ */ jsxRuntime.jsx(
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
             "button",
             {
               type: "button",
@@ -455,7 +524,7 @@ function HistoryRow({
                 onMenu(e.clientX, e.clientY);
               },
               className: "hidden h-11 w-11 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground md:flex",
-              children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.MoreVertical, { className: "h-5 w-5" })
+              children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_lucide_react2.MoreVertical, { className: "h-5 w-5" })
             }
           )
         ] })
@@ -470,15 +539,15 @@ function FloatingMenu({
   children
 }) {
   const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
-  react.useEffect(() => {
+  (0, import_react2.useEffect)(() => {
     const onKey = (e) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
   if (isMobile) {
-    return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "fixed inset-0 z-40 bg-black/40", onClick: onClose }),
-      /* @__PURE__ */ jsxRuntime.jsx(
+    return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "fixed inset-0 z-40 bg-black/40", onClick: onClose }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
         "div",
         {
           role: "menu",
@@ -489,9 +558,9 @@ function FloatingMenu({
     ] });
   }
   const overflowRight = x + 188 > window.innerWidth;
-  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
-    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "fixed inset-0 z-40", onClick: onClose }),
-    /* @__PURE__ */ jsxRuntime.jsx(
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "fixed inset-0 z-40", onClick: onClose }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
       "div",
       {
         role: "menu",
@@ -506,7 +575,7 @@ function FloatingMenuItem({
   className,
   ...props
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
     "button",
     {
       type: "button",
@@ -518,37 +587,39 @@ function FloatingMenuItem({
     }
   );
 }
-
-exports.ActionBar = ActionBar;
-exports.AlertBanner = AlertBanner;
-exports.AppHeader = AppHeader;
-exports.Badge = Badge;
-exports.BottomNav = BottomNav;
-exports.Button = Button;
-exports.Card = Card;
-exports.CardContent = CardContent;
-exports.CardHeader = CardHeader;
-exports.CardTitle = CardTitle;
-exports.FloatingMenu = FloatingMenu;
-exports.FloatingMenuItem = FloatingMenuItem;
-exports.HistoryRow = HistoryRow;
-exports.Input = Input;
-exports.Label = Label;
-exports.PageContainer = PageContainer;
-exports.PageHeaderRow = PageHeaderRow;
-exports.PageTitle = PageTitle;
-exports.SaveButton = SaveButton;
-exports.Section = Section;
-exports.Select = Select;
-exports.SettingsPage = SettingsPage;
-exports.SyncSection = SyncSection;
-exports.THEME_INIT_SCRIPT = THEME_INIT_SCRIPT;
-exports.Textarea = Textarea;
-exports.ThemeSelector = ThemeSelector;
-exports.applyThemeChoice = applyThemeChoice;
-exports.cn = cn;
-exports.getThemeChoice = getThemeChoice;
-exports.resolvesToDark = resolvesToDark;
-exports.setThemeChoice = setThemeChoice;
-exports.useLongPress = useLongPress;
-exports.watchSystemTheme = watchSystemTheme;
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  ActionBar,
+  AlertBanner,
+  AppHeader,
+  Badge,
+  BottomNav,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  FloatingMenu,
+  FloatingMenuItem,
+  HistoryRow,
+  Input,
+  Label,
+  PageContainer,
+  PageHeaderRow,
+  PageTitle,
+  SaveButton,
+  Section,
+  Select,
+  SettingsPage,
+  SyncSection,
+  THEME_INIT_SCRIPT,
+  Textarea,
+  ThemeSelector,
+  applyThemeChoice,
+  cn,
+  getThemeChoice,
+  resolvesToDark,
+  setThemeChoice,
+  useLongPress,
+  watchSystemTheme
+});

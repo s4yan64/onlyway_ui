@@ -1,3 +1,5 @@
+"use client";
+
 // Appui long (mobile) — IDENTIQUE sur toutes les PWA. Ouvre un menu d'actions
 // (alternative tactile au clic droit / kebab desktop). delay 500ms, seuil 10px.
 import { useCallback, useRef } from "react";

@@ -1,9 +1,8 @@
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-import { useRef, useCallback, useState, useEffect } from 'react';
-import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
-import { Save, Info, AlertTriangle, AlertCircle, CheckCircle2, X, Monitor, Sun, Moon, CloudOff, Loader2, LogOut, MoreVertical } from 'lucide-react';
+"use client";
 
+// src/lib/cn.ts
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
@@ -34,6 +33,9 @@ function watchSystemTheme() {
   return () => mq.removeEventListener("change", handler);
 }
 var THEME_INIT_SCRIPT = "(function(){try{var t=localStorage.getItem('theme')||'system';var d=t==='dark'||(t==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();";
+
+// src/lib/useLongPress.ts
+import { useCallback, useRef } from "react";
 function useLongPress(callback, { delay = 500, moveThreshold = 10 } = {}) {
   const timeoutRef = useRef(null);
   const triggeredRef = useRef(false);
@@ -74,6 +76,9 @@ function useLongPress(callback, { delay = 500, moveThreshold = 10 } = {}) {
     shouldIgnoreClick: () => triggeredRef.current
   };
 }
+
+// src/components/ui.tsx
+import { jsx } from "react/jsx-runtime";
 var BTN_VARIANT = {
   primary: "bg-primary text-primary-foreground hover:opacity-90",
   secondary: "bg-secondary text-secondary-foreground border border-border hover:bg-muted",
@@ -203,23 +208,27 @@ function Badge({
 function PageTitle({ className, ...props }) {
   return /* @__PURE__ */ jsx("h1", { className: cn("text-2xl font-bold", className), ...props });
 }
+
+// src/components/layout.tsx
+import { AlertCircle, AlertTriangle, CheckCircle2, Info, Save, X } from "lucide-react";
+import { jsx as jsx2, jsxs } from "react/jsx-runtime";
 function AppHeader({ appName, logoSrc }) {
-  return /* @__PURE__ */ jsx("header", { className: "safe-top sticky top-0 z-30 h-14 border-b border-border bg-background/85 backdrop-blur-md", children: /* @__PURE__ */ jsxs("div", { className: "mx-auto flex h-14 w-full max-w-content items-center gap-2.5 px-4", children: [
-    /* @__PURE__ */ jsx("img", { src: logoSrc, alt: "", className: "h-7 w-7 shrink-0 rounded-md" }),
-    /* @__PURE__ */ jsx("span", { className: "text-base font-semibold text-foreground", children: appName })
+  return /* @__PURE__ */ jsx2("header", { className: "safe-top sticky top-0 z-30 h-14 border-b border-border bg-background/85 backdrop-blur-md", children: /* @__PURE__ */ jsxs("div", { className: "mx-auto flex h-14 w-full max-w-content items-center gap-2.5 px-4", children: [
+    /* @__PURE__ */ jsx2("img", { src: logoSrc, alt: "", className: "h-7 w-7 shrink-0 rounded-md" }),
+    /* @__PURE__ */ jsx2("span", { className: "text-base font-semibold text-foreground", children: appName })
   ] }) });
 }
 function PageContainer({ children, className }) {
-  return /* @__PURE__ */ jsx("main", { className: cn("mx-auto w-full max-w-content px-4 pb-24 pt-4", className), children });
+  return /* @__PURE__ */ jsx2("main", { className: cn("mx-auto w-full max-w-content px-4 pb-24 pt-4", className), children });
 }
 function BottomNav({
   items,
   active,
   onNavigate
 }) {
-  return /* @__PURE__ */ jsx("nav", { className: "safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/85 backdrop-blur-md", children: /* @__PURE__ */ jsx("ul", { className: "mx-auto grid w-full max-w-content grid-cols-3", children: items.map(({ key, label, icon: Icon }) => {
+  return /* @__PURE__ */ jsx2("nav", { className: "safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/85 backdrop-blur-md", children: /* @__PURE__ */ jsx2("ul", { className: "mx-auto grid w-full max-w-content grid-cols-3", children: items.map(({ key, label, icon: Icon }) => {
     const on = key === active;
-    return /* @__PURE__ */ jsx("li", { children: /* @__PURE__ */ jsxs(
+    return /* @__PURE__ */ jsx2("li", { children: /* @__PURE__ */ jsxs(
       "button",
       {
         type: "button",
@@ -229,7 +238,7 @@ function BottomNav({
           on ? "text-brand" : "text-muted-foreground"
         ),
         children: [
-          /* @__PURE__ */ jsx(Icon, { className: "h-5 w-5" }),
+          /* @__PURE__ */ jsx2(Icon, { className: "h-5 w-5" }),
           label
         ]
       }
@@ -237,11 +246,11 @@ function BottomNav({
   }) }) });
 }
 function ActionBar({ children }) {
-  return /* @__PURE__ */ jsx("div", { className: "safe-bottom fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background/85 px-4 py-3 backdrop-blur-md", children: /* @__PURE__ */ jsx("div", { className: "mx-auto flex w-full max-w-content items-center gap-2", children }) });
+  return /* @__PURE__ */ jsx2("div", { className: "safe-bottom fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background/85 px-4 py-3 backdrop-blur-md", children: /* @__PURE__ */ jsx2("div", { className: "mx-auto flex w-full max-w-content items-center gap-2", children }) });
 }
 function SaveButton(props) {
   return /* @__PURE__ */ jsxs(Button, { size: "lg", className: "h-11 flex-1 font-semibold", ...props, children: [
-    /* @__PURE__ */ jsx(Save, { className: "h-4 w-4" }),
+    /* @__PURE__ */ jsx2(Save, { className: "h-4 w-4" }),
     " Enregistrer"
   ] });
 }
@@ -266,16 +275,16 @@ function AlertBanner({
         cls
       ),
       children: [
-        /* @__PURE__ */ jsx(Icon, { className: "h-4 w-4 shrink-0" }),
-        /* @__PURE__ */ jsx("span", { className: "min-w-0 flex-1", children }),
-        onClose && /* @__PURE__ */ jsx("button", { type: "button", onClick: onClose, "aria-label": "Fermer", className: "opacity-70", children: /* @__PURE__ */ jsx(X, { className: "h-4 w-4" }) })
+        /* @__PURE__ */ jsx2(Icon, { className: "h-4 w-4 shrink-0" }),
+        /* @__PURE__ */ jsx2("span", { className: "min-w-0 flex-1", children }),
+        onClose && /* @__PURE__ */ jsx2("button", { type: "button", onClick: onClose, "aria-label": "Fermer", className: "opacity-70", children: /* @__PURE__ */ jsx2(X, { className: "h-4 w-4" }) })
       ]
     }
   );
 }
 function PageHeaderRow({ title, action }) {
   return /* @__PURE__ */ jsxs("div", { className: "mb-6 flex items-center justify-between gap-3", children: [
-    /* @__PURE__ */ jsx(PageTitle, { children: title }),
+    /* @__PURE__ */ jsx2(PageTitle, { children: title }),
     action
   ] });
 }
@@ -285,17 +294,31 @@ function Section({
   children
 }) {
   return /* @__PURE__ */ jsxs("section", { className: "flex flex-col gap-3", children: [
-    /* @__PURE__ */ jsx("h2", { className: "text-sm font-semibold uppercase tracking-wide text-muted-foreground", children: title }),
-    description && /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: description }),
+    /* @__PURE__ */ jsx2("h2", { className: "text-sm font-semibold uppercase tracking-wide text-muted-foreground", children: title }),
+    description && /* @__PURE__ */ jsx2("p", { className: "text-sm text-muted-foreground", children: description }),
     children
   ] });
 }
 function SettingsPage({ children }) {
   return /* @__PURE__ */ jsxs(PageContainer, { className: "flex flex-col gap-6", children: [
-    /* @__PURE__ */ jsx(PageTitle, { children: "R\xE9glages" }),
+    /* @__PURE__ */ jsx2(PageTitle, { children: "R\xE9glages" }),
     children
   ] });
 }
+
+// src/components/patterns.tsx
+import { useEffect, useState } from "react";
+import {
+  CheckCircle2 as CheckCircle22,
+  CloudOff,
+  Loader2,
+  LogOut,
+  Monitor,
+  Moon,
+  MoreVertical,
+  Sun
+} from "lucide-react";
+import { Fragment, jsx as jsx3, jsxs as jsxs2 } from "react/jsx-runtime";
 var THEME_OPTIONS = [
   { value: "system", label: "Syst\xE8me", icon: Monitor },
   { value: "light", label: "Clair", icon: Sun },
@@ -307,9 +330,9 @@ function ThemeSelector() {
     setChoice(getThemeChoice());
     return watchSystemTheme();
   }, []);
-  return /* @__PURE__ */ jsx("div", { className: "grid grid-cols-3 gap-2", children: THEME_OPTIONS.map(({ value, label, icon: Icon }) => {
+  return /* @__PURE__ */ jsx3("div", { className: "grid grid-cols-3 gap-2", children: THEME_OPTIONS.map(({ value, label, icon: Icon }) => {
     const on = choice === value;
-    return /* @__PURE__ */ jsxs(
+    return /* @__PURE__ */ jsxs2(
       "button",
       {
         type: "button",
@@ -322,7 +345,7 @@ function ThemeSelector() {
           on ? "border-foreground bg-foreground text-background" : "border-border bg-card text-foreground"
         ),
         children: [
-          /* @__PURE__ */ jsx(Icon, { className: cn("h-5 w-5", on ? "text-background" : "text-muted-foreground") }),
+          /* @__PURE__ */ jsx3(Icon, { className: cn("h-5 w-5", on ? "text-background" : "text-muted-foreground") }),
           label
         ]
       },
@@ -339,33 +362,33 @@ function SyncSection({
   const [pwd, setPwd] = useState("");
   const [busy, setBusy] = useState(false);
   if (state === "unavailable") {
-    return /* @__PURE__ */ jsxs("p", { className: "flex items-center gap-2 text-sm text-muted-foreground", children: [
-      /* @__PURE__ */ jsx(CloudOff, { className: "h-4 w-4" }),
+    return /* @__PURE__ */ jsxs2("p", { className: "flex items-center gap-2 text-sm text-muted-foreground", children: [
+      /* @__PURE__ */ jsx3(CloudOff, { className: "h-4 w-4" }),
       " Synchronisation non disponible."
     ] });
   }
   if (state === "loading") {
-    return /* @__PURE__ */ jsxs("p", { className: "flex items-center gap-2 text-sm text-muted-foreground", children: [
-      /* @__PURE__ */ jsx(Loader2, { className: "h-4 w-4 animate-spin" }),
+    return /* @__PURE__ */ jsxs2("p", { className: "flex items-center gap-2 text-sm text-muted-foreground", children: [
+      /* @__PURE__ */ jsx3(Loader2, { className: "h-4 w-4 animate-spin" }),
       " V\xE9rification\u2026"
     ] });
   }
   if (state === "connected") {
-    return /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-3", children: [
-      /* @__PURE__ */ jsxs("p", { className: "flex items-center gap-2 text-sm text-success", children: [
-        /* @__PURE__ */ jsx(CheckCircle2, { className: "h-4 w-4" }),
+    return /* @__PURE__ */ jsxs2("div", { className: "flex flex-col gap-3", children: [
+      /* @__PURE__ */ jsxs2("p", { className: "flex items-center gap-2 text-sm text-success", children: [
+        /* @__PURE__ */ jsx3(CheckCircle22, { className: "h-4 w-4" }),
         " Synchronisation active."
       ] }),
-      /* @__PURE__ */ jsxs(Button, { variant: "outline", className: "w-fit", onClick: onDisconnect, children: [
-        /* @__PURE__ */ jsx(LogOut, { className: "h-4 w-4" }),
+      /* @__PURE__ */ jsxs2(Button, { variant: "outline", className: "w-fit", onClick: onDisconnect, children: [
+        /* @__PURE__ */ jsx3(LogOut, { className: "h-4 w-4" }),
         " Se d\xE9connecter"
       ] })
     ] });
   }
-  return /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-3", children: [
-    /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Tes donn\xE9es sont en local sur cet appareil. Connecte-toi pour les synchroniser." }),
-    /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-2 sm:flex-row", children: [
-      /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsxs2("div", { className: "flex flex-col gap-3", children: [
+    /* @__PURE__ */ jsx3("p", { className: "text-sm text-muted-foreground", children: "Tes donn\xE9es sont en local sur cet appareil. Connecte-toi pour les synchroniser." }),
+    /* @__PURE__ */ jsxs2("div", { className: "flex flex-col gap-2 sm:flex-row", children: [
+      /* @__PURE__ */ jsx3(
         Input,
         {
           type: "password",
@@ -377,7 +400,7 @@ function SyncSection({
           className: "sm:max-w-xs"
         }
       ),
-      /* @__PURE__ */ jsx(
+      /* @__PURE__ */ jsx3(
         Button,
         {
           disabled: !pwd || busy,
@@ -393,7 +416,7 @@ function SyncSection({
         }
       )
     ] }),
-    error && /* @__PURE__ */ jsx("p", { className: "text-sm text-destructive", children: error })
+    error && /* @__PURE__ */ jsx3("p", { className: "text-sm text-destructive", children: error })
   ] });
 }
 function HistoryRow({
@@ -406,7 +429,7 @@ function HistoryRow({
   onMenu
 }) {
   const longPress = useLongPress((e) => onMenu(e.clientX, e.clientY));
-  return /* @__PURE__ */ jsx("li", { children: /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsx3("li", { children: /* @__PURE__ */ jsx3(
     "div",
     {
       role: "button",
@@ -430,20 +453,20 @@ function HistoryRow({
       onPointerCancel: longPress.onPointerCancel,
       className: "block cursor-pointer select-none rounded-lg border border-border bg-card p-4 transition-colors hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring md:select-text",
       style: { WebkitTouchCallout: "none" },
-      children: /* @__PURE__ */ jsxs("div", { className: "flex items-start justify-between gap-3", children: [
-        /* @__PURE__ */ jsxs("div", { className: "min-w-0 flex-1 space-y-1.5", children: [
-          /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center gap-x-3 gap-y-1", children: [
-            /* @__PURE__ */ jsx("span", { className: "font-semibold", children: title }),
+      children: /* @__PURE__ */ jsxs2("div", { className: "flex items-start justify-between gap-3", children: [
+        /* @__PURE__ */ jsxs2("div", { className: "min-w-0 flex-1 space-y-1.5", children: [
+          /* @__PURE__ */ jsxs2("div", { className: "flex flex-wrap items-center gap-x-3 gap-y-1", children: [
+            /* @__PURE__ */ jsx3("span", { className: "font-semibold", children: title }),
             badge
           ] }),
-          lines && /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground", children: lines })
+          lines && /* @__PURE__ */ jsx3("div", { className: "text-sm text-muted-foreground", children: lines })
         ] }),
-        /* @__PURE__ */ jsxs("div", { className: "flex shrink-0 flex-col items-end justify-between gap-2 self-stretch", children: [
-          amount !== void 0 && /* @__PURE__ */ jsxs("div", { className: "whitespace-nowrap text-right", children: [
-            /* @__PURE__ */ jsx("div", { className: "text-lg font-semibold", children: amount }),
-            amountLabel && /* @__PURE__ */ jsx("div", { className: "text-xs text-muted-foreground", children: amountLabel })
+        /* @__PURE__ */ jsxs2("div", { className: "flex shrink-0 flex-col items-end justify-between gap-2 self-stretch", children: [
+          amount !== void 0 && /* @__PURE__ */ jsxs2("div", { className: "whitespace-nowrap text-right", children: [
+            /* @__PURE__ */ jsx3("div", { className: "text-lg font-semibold", children: amount }),
+            amountLabel && /* @__PURE__ */ jsx3("div", { className: "text-xs text-muted-foreground", children: amountLabel })
           ] }),
-          /* @__PURE__ */ jsx(
+          /* @__PURE__ */ jsx3(
             "button",
             {
               type: "button",
@@ -453,7 +476,7 @@ function HistoryRow({
                 onMenu(e.clientX, e.clientY);
               },
               className: "hidden h-11 w-11 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground md:flex",
-              children: /* @__PURE__ */ jsx(MoreVertical, { className: "h-5 w-5" })
+              children: /* @__PURE__ */ jsx3(MoreVertical, { className: "h-5 w-5" })
             }
           )
         ] })
@@ -474,9 +497,9 @@ function FloatingMenu({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
   if (isMobile) {
-    return /* @__PURE__ */ jsxs(Fragment, { children: [
-      /* @__PURE__ */ jsx("div", { className: "fixed inset-0 z-40 bg-black/40", onClick: onClose }),
-      /* @__PURE__ */ jsx(
+    return /* @__PURE__ */ jsxs2(Fragment, { children: [
+      /* @__PURE__ */ jsx3("div", { className: "fixed inset-0 z-40 bg-black/40", onClick: onClose }),
+      /* @__PURE__ */ jsx3(
         "div",
         {
           role: "menu",
@@ -487,9 +510,9 @@ function FloatingMenu({
     ] });
   }
   const overflowRight = x + 188 > window.innerWidth;
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx("div", { className: "fixed inset-0 z-40", onClick: onClose }),
-    /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsxs2(Fragment, { children: [
+    /* @__PURE__ */ jsx3("div", { className: "fixed inset-0 z-40", onClick: onClose }),
+    /* @__PURE__ */ jsx3(
       "div",
       {
         role: "menu",
@@ -504,7 +527,7 @@ function FloatingMenuItem({
   className,
   ...props
 }) {
-  return /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsx3(
     "button",
     {
       type: "button",
@@ -516,5 +539,38 @@ function FloatingMenuItem({
     }
   );
 }
-
-export { ActionBar, AlertBanner, AppHeader, Badge, BottomNav, Button, Card, CardContent, CardHeader, CardTitle, FloatingMenu, FloatingMenuItem, HistoryRow, Input, Label, PageContainer, PageHeaderRow, PageTitle, SaveButton, Section, Select, SettingsPage, SyncSection, THEME_INIT_SCRIPT, Textarea, ThemeSelector, applyThemeChoice, cn, getThemeChoice, resolvesToDark, setThemeChoice, useLongPress, watchSystemTheme };
+export {
+  ActionBar,
+  AlertBanner,
+  AppHeader,
+  Badge,
+  BottomNav,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  FloatingMenu,
+  FloatingMenuItem,
+  HistoryRow,
+  Input,
+  Label,
+  PageContainer,
+  PageHeaderRow,
+  PageTitle,
+  SaveButton,
+  Section,
+  Select,
+  SettingsPage,
+  SyncSection,
+  THEME_INIT_SCRIPT,
+  Textarea,
+  ThemeSelector,
+  applyThemeChoice,
+  cn,
+  getThemeChoice,
+  resolvesToDark,
+  setThemeChoice,
+  useLongPress,
+  watchSystemTheme
+};

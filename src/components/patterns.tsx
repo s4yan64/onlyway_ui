@@ -1,3 +1,5 @@
+"use client";
+
 // Patterns canoniques — IDENTIQUES sur toutes les PWA.
 // ThemeSelector, SyncSection, HistoryRow (+ FloatingMenu). Tokens uniquement.
 import { type ReactNode, useEffect, useState } from "react";
