@@ -244,7 +244,9 @@ function BottomNav({
             type: "button",
             onClick: () => onNavigate(key),
             className: cn(
-              "flex min-h-[56px] w-full flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors",
+              // Hauteur portée par `--nav-h` (base.css) : c'est la même
+              // valeur que lit <AnchoredBar> pour se poser au-dessus.
+              "flex min-h-[var(--nav-h)] w-full flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors",
               on ? "text-brand" : "text-muted-foreground"
             ),
             children: [
@@ -256,6 +258,21 @@ function BottomNav({
       })
     }
   ) });
+}
+function AnchoredBar({
+  children,
+  className
+}) {
+  return /* @__PURE__ */ jsx2(
+    "div",
+    {
+      className: cn(
+        "above-nav fixed inset-x-0 z-20 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-md",
+        className
+      ),
+      children: /* @__PURE__ */ jsx2("div", { className: "mx-auto flex w-full max-w-content items-center gap-3", children })
+    }
+  );
 }
 function ActionBar({ children }) {
   return /* @__PURE__ */ jsx2("div", { className: "safe-bottom fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background/85 px-4 py-3 backdrop-blur-md", children: /* @__PURE__ */ jsx2("div", { className: "mx-auto flex w-full max-w-content items-center gap-2", children }) });
@@ -290,6 +307,28 @@ function AlertBanner({
         /* @__PURE__ */ jsx2(Icon, { className: "h-4 w-4 shrink-0" }),
         /* @__PURE__ */ jsx2("span", { className: "min-w-0 flex-1", children }),
         onClose && /* @__PURE__ */ jsx2("button", { type: "button", onClick: onClose, "aria-label": "Fermer", className: "opacity-70", children: /* @__PURE__ */ jsx2(X, { className: "h-4 w-4" }) })
+      ]
+    }
+  );
+}
+function InlineNotice({
+  variant = "info",
+  children,
+  className
+}) {
+  const { cls, Icon } = ALERT[variant];
+  return /* @__PURE__ */ jsxs(
+    "div",
+    {
+      role: "status",
+      className: cn(
+        "flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium",
+        cls,
+        className
+      ),
+      children: [
+        /* @__PURE__ */ jsx2(Icon, { className: "h-4 w-4 shrink-0" }),
+        /* @__PURE__ */ jsx2("span", { className: "min-w-0 flex-1", children })
       ]
     }
   );
@@ -863,6 +902,7 @@ function TableEmpty({ colSpan, children }) {
 export {
   ActionBar,
   AlertBanner,
+  AnchoredBar,
   AppHeader,
   Badge,
   BottomNav,
@@ -879,6 +919,7 @@ export {
   FloatingMenu,
   FloatingMenuItem,
   HistoryRow,
+  InlineNotice,
   Input,
   Label,
   PageContainer,

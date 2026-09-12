@@ -70,6 +70,10 @@ declare function BottomNav({ items, active, onNavigate, }: {
     active: string;
     onNavigate: (key: string) => void;
 }): react.JSX.Element;
+declare function AnchoredBar({ children, className, }: {
+    children: ReactNode;
+    className?: string;
+}): react.JSX.Element;
 declare function ActionBar({ children }: {
     children: ReactNode;
 }): react.JSX.Element;
@@ -79,6 +83,11 @@ declare function AlertBanner({ variant, children, onClose, }: {
     variant?: AlertVariant;
     children: ReactNode;
     onClose?: () => void;
+}): react.JSX.Element;
+declare function InlineNotice({ variant, children, className, }: {
+    variant?: AlertVariant;
+    children: ReactNode;
+    className?: string;
 }): react.JSX.Element;
 declare function PageHeaderRow({ title, action }: {
     title: ReactNode;
@@ -171,4 +180,4 @@ declare function TableEmpty({ colSpan, children }: {
     children: ReactNode;
 }): react.JSX.Element;
 
-export { ActionBar, AlertBanner, AppHeader, Badge, BottomNav, Button, Card, CardContent, CardHeader, CardTitle, Checkbox, Dialog, DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, FloatingMenu, FloatingMenuItem, HistoryRow, Input, Label, type NavItem, PageContainer, PageHeaderRow, PageTitle, SaveButton, Section, Select, SettingsPage, Switch, SyncSection, THEME_INIT_SCRIPT, Table, TableBody, TableCell, TableEmpty, TableHead, TableHeader, TableRow, Tabs, TabsContent, TabsList, TabsTrigger, Textarea, type ThemeChoice, ThemeSelector, applyThemeChoice, cn, getThemeChoice, resolvesToDark, setThemeChoice, useLongPress, watchSystemTheme };
+export { ActionBar, AlertBanner, AnchoredBar, AppHeader, Badge, BottomNav, Button, Card, CardContent, CardHeader, CardTitle, Checkbox, Dialog, DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, FloatingMenu, FloatingMenuItem, HistoryRow, InlineNotice, Input, Label, type NavItem, PageContainer, PageHeaderRow, PageTitle, SaveButton, Section, Select, SettingsPage, Switch, SyncSection, THEME_INIT_SCRIPT, Table, TableBody, TableCell, TableEmpty, TableHead, TableHeader, TableRow, Tabs, TabsContent, TabsList, TabsTrigger, Textarea, type ThemeChoice, ThemeSelector, applyThemeChoice, cn, getThemeChoice, resolvesToDark, setThemeChoice, useLongPress, watchSystemTheme };

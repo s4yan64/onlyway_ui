@@ -44,3 +44,23 @@ a,
 .safe-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
+
+/* ============================================================================
+   HAUTEUR DE LA BARRE DU BAS — `--nav-h`
+   ----------------------------------------------------------------------------
+   ⚠️ ELLE EST CONNUE DE DEUX ENDROITS : <BottomNav>, qui l'occupe, et tout ce
+   qui doit se poser AU-DESSUS d'elle (<AnchoredBar>). Recopier « 56 px » dans
+   le second, c'est accepter qu'un jour l'un bouge et pas l'autre — et le
+   symptôme est une barre d'action à moitié cachée sous la navigation, sur un
+   seul modèle de téléphone.
+
+   La valeur est HORS zone sûre : `env(safe-area-inset-bottom)` s'y AJOUTE, il
+   ne s'y substitue pas.
+   ============================================================================ */
+:root {
+  --nav-h: 56px;
+}
+
+.above-nav {
+  bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
+}

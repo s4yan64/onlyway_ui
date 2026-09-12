@@ -70,7 +70,9 @@ export function BottomNav({
                 type="button"
                 onClick={() => onNavigate(key)}
                 className={cn(
-                  "flex min-h-[56px] w-full flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors",
+                  // Hauteur portée par `--nav-h` (base.css) : c'est la même
+                  // valeur que lit <AnchoredBar> pour se poser au-dessus.
+                  "flex min-h-[var(--nav-h)] w-full flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors",
                   on ? "text-brand" : "text-muted-foreground",
                 )}
               >
@@ -82,6 +84,36 @@ export function BottomNav({
         })}
       </ul>
     </nav>
+  );
+}
+
+/* -------------------------------------------------------------- AnchoredBar
+   Barre fixe posée JUSTE AU-DESSUS de <BottomNav> — le panier d'une caisse,
+   le total d'une commande : ce qui doit rester sous les yeux sans masquer la
+   navigation.
+
+   ⚠️ À NE PAS CONFONDRE AVEC <ActionBar>, qui se colle à `bottom-0`. Les deux
+   ne coexistent pas : ActionBar sert les écrans SANS barre du bas (le desktop
+   admin), AnchoredBar ceux qui en ont une.
+
+   ⚠️ Sa position vient de `--nav-h` (base.css), jamais d'un `bottom-16` écrit
+   dans une app : la hauteur de la navigation se décide à UN endroit. */
+export function AnchoredBar({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "above-nav fixed inset-x-0 z-20 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-md",
+        className,
+      )}
+    >
+      <div className="mx-auto flex w-full max-w-content items-center gap-3">{children}</div>
+    </div>
   );
 }
 
@@ -136,6 +168,38 @@ export function AlertBanner({
           <X className="h-4 w-4" />
         </button>
       )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------ InlineNotice
+   Le MÊME vocabulaire de variantes qu'<AlertBanner>, mais DANS le flux.
+
+   ⚠️ <AlertBanner> est fixé en haut de l'écran : deux bannières affichées en
+   même temps se superposent exactement, et la seconde cache la première. Elle
+   convient à un message unique et passager ; un état permanent — « hors ligne »,
+   « 3 ventes en attente » — se pose dans la page, à sa place, et cohabite. */
+export function InlineNotice({
+  variant = "info",
+  children,
+  className,
+}: {
+  variant?: AlertVariant;
+  children: ReactNode;
+  className?: string;
+}) {
+  const { cls, Icon } = ALERT[variant];
+  return (
+    <div
+      role="status"
+      className={cn(
+        "flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium",
+        cls,
+        className,
+      )}
+    >
+      <Icon className="h-4 w-4 shrink-0" />
+      <span className="min-w-0 flex-1">{children}</span>
     </div>
   );
 }
