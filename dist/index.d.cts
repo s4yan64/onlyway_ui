@@ -109,14 +109,19 @@ declare function SyncSection({ state, error, onConnect, onDisconnect, }: {
     onConnect?: (password: string) => void;
     onDisconnect?: () => void;
 }): react.JSX.Element;
-declare function HistoryRow({ title, badge, lines, amount, amountLabel, onOpen, onMenu, }: {
+declare function HistoryList({ children, className }: {
+    children: ReactNode;
+    className?: string;
+}): react.JSX.Element;
+declare function HistoryRow({ title, badge, lines, amount, amountLabel, onOpen, onMenu, cancelled, }: {
     title: ReactNode;
     badge?: ReactNode;
     lines?: ReactNode;
     amount?: ReactNode;
     amountLabel?: string;
     onOpen: () => void;
-    onMenu: (x: number, y: number) => void;
+    onMenu?: (x: number, y: number) => void;
+    cancelled?: boolean;
 }): react.JSX.Element;
 
 declare function FloatingMenu({ x, y, onClose, children, }: {
@@ -135,6 +140,16 @@ declare function Dialog({ open, onClose, title, description, footer, children, c
     footer?: ReactNode;
     children?: ReactNode;
     className?: string;
+}): react.JSX.Element;
+declare function ReasonPicker({ suggestions, value, onChange, variant, name, otherLabel, placeholder, maxLength, }: {
+    suggestions: readonly string[];
+    value: string;
+    onChange: (reason: string) => void;
+    variant?: "tiles" | "text";
+    name?: string;
+    otherLabel?: string;
+    placeholder?: string;
+    maxLength?: number;
 }): react.JSX.Element;
 declare function Tabs({ value, defaultValue, onValueChange, children, className, }: {
     value?: string;
@@ -180,4 +195,4 @@ declare function TableEmpty({ colSpan, children }: {
     children: ReactNode;
 }): react.JSX.Element;
 
-export { ActionBar, AlertBanner, AnchoredBar, AppHeader, Badge, BottomNav, Button, Card, CardContent, CardHeader, CardTitle, Checkbox, Dialog, DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, FloatingMenu, FloatingMenuItem, HistoryRow, InlineNotice, Input, Label, type NavItem, PageContainer, PageHeaderRow, PageTitle, SaveButton, Section, Select, SettingsPage, Switch, SyncSection, THEME_INIT_SCRIPT, Table, TableBody, TableCell, TableEmpty, TableHead, TableHeader, TableRow, Tabs, TabsContent, TabsList, TabsTrigger, Textarea, type ThemeChoice, ThemeSelector, applyThemeChoice, cn, getThemeChoice, resolvesToDark, setThemeChoice, useLongPress, watchSystemTheme };
+export { ActionBar, AlertBanner, AnchoredBar, AppHeader, Badge, BottomNav, Button, Card, CardContent, CardHeader, CardTitle, Checkbox, Dialog, DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, FloatingMenu, FloatingMenuItem, HistoryList, HistoryRow, InlineNotice, Input, Label, type NavItem, PageContainer, PageHeaderRow, PageTitle, ReasonPicker, SaveButton, Section, Select, SettingsPage, Switch, SyncSection, THEME_INIT_SCRIPT, Table, TableBody, TableCell, TableEmpty, TableHead, TableHeader, TableRow, Tabs, TabsContent, TabsList, TabsTrigger, Textarea, type ThemeChoice, ThemeSelector, applyThemeChoice, cn, getThemeChoice, resolvesToDark, setThemeChoice, useLongPress, watchSystemTheme };

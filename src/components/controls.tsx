@@ -110,6 +110,122 @@ export function Dialog({
   );
 }
 
+/* ------------------------------------------------------------- ReasonPicker
+   UNE SOURCE DE MOTIFS, DEUX RENDUS.
+
+   `tiles` — pour le pouce ganté : une grille de tuiles d'au moins 56 px, et
+   « Autre… » comme SEULE tuile qui ouvre un clavier. Sur un stand, en décembre,
+   retirer un gant pour taper un motif coûte trente secondes et un client.
+
+   `text` — pour le clavier de l'admin : un champ libre, les suggestions en
+   liste déroulante native (`<datalist>`).
+
+   ⚠️ CONTRÔLÉ. Le composant ne CONFIRME rien : il rend un motif. C'est à
+   l'écran de décider ce qui engage — et pour une annulation irréversible, un
+   bouton final qui REDIT le motif vaut mieux qu'une tuile qui engage au premier
+   effleurement. Toucher la mauvaise tuile ne doit rien écrire.
+
+   `name` : présent, un champ caché (ou le champ lui-même) porte la valeur dans
+   un <form>, pour les Server Actions. */
+export function ReasonPicker({
+  suggestions,
+  value,
+  onChange,
+  variant = "tiles",
+  name,
+  otherLabel = "Autre…",
+  placeholder = "Motif",
+  maxLength,
+}: {
+  suggestions: readonly string[];
+  value: string;
+  onChange: (reason: string) => void;
+  variant?: "tiles" | "text";
+  name?: string;
+  otherLabel?: string;
+  placeholder?: string;
+  maxLength?: number;
+}) {
+  const listeId = useId();
+  // « Autre » est ouvert si l'utilisateur l'a demandé, ou si la valeur ne
+  // correspond à aucune tuile (un motif repris, ou tapé puis resélectionné).
+  const [autreDemande, setAutreDemande] = useState(false);
+  const autre = autreDemande || (value !== "" && !suggestions.includes(value));
+
+  const champ = (
+    <input
+      name={variant === "text" ? name : undefined}
+      list={variant === "text" && suggestions.length > 0 ? listeId : undefined}
+      value={value}
+      maxLength={maxLength}
+      placeholder={placeholder}
+      autoFocus={variant === "tiles"}
+      onChange={(e) => onChange(e.target.value)}
+      className="h-12 w-full rounded-md border border-input bg-card px-3 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/40"
+    />
+  );
+
+  if (variant === "text") {
+    return (
+      <>
+        {champ}
+        {suggestions.length > 0 && (
+          <datalist id={listeId}>
+            {suggestions.map((m) => (
+              <option key={m} value={m} />
+            ))}
+          </datalist>
+        )}
+      </>
+    );
+  }
+
+  const tuile = (actif: boolean) =>
+    cn(
+      "min-h-14 rounded-lg border px-3 text-sm font-medium transition-colors",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+      actif
+        ? "border-primary bg-primary text-primary-foreground"
+        : "border-border bg-card text-foreground active:bg-muted",
+    );
+
+  return (
+    <div className="space-y-2">
+      {name && <input type="hidden" name={name} value={value} />}
+      <div className="grid grid-cols-2 gap-2">
+        {suggestions.map((m) => (
+          <button
+            key={m}
+            type="button"
+            aria-pressed={!autre && value === m}
+            onClick={() => {
+              setAutreDemande(false);
+              onChange(m);
+            }}
+            className={tuile(!autre && value === m)}
+          >
+            {m}
+          </button>
+        ))}
+        <button
+          type="button"
+          aria-pressed={autre}
+          onClick={() => {
+            setAutreDemande(true);
+            // Repartir d'un champ vide : garder la tuile précédente comme texte
+            // ferait croire qu'on la modifie.
+            if (suggestions.includes(value)) onChange("");
+          }}
+          className={tuile(autre)}
+        >
+          {otherLabel}
+        </button>
+      </div>
+      {autre && champ}
+    </div>
+  );
+}
+
 /* ------------------------------------------------------------------- Tabs
    Composants composés, vocabulaire shadcn/Radix — un nom que la communauté
    emploie déjà est un nom qu'on n'a pas à expliquer.

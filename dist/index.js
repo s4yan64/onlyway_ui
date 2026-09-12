@@ -470,6 +470,9 @@ function SyncSection({
     error && /* @__PURE__ */ jsx3("p", { className: "text-sm text-destructive", children: error })
   ] });
 }
+function HistoryList({ children, className }) {
+  return /* @__PURE__ */ jsx3("ul", { className: cn("space-y-2", className), children });
+}
 function HistoryRow({
   title,
   badge,
@@ -477,32 +480,39 @@ function HistoryRow({
   amount,
   amountLabel,
   onOpen,
-  onMenu
+  onMenu,
+  cancelled = false
 }) {
-  const longPress = useLongPress((e) => onMenu(e.clientX, e.clientY));
+  const longPress = useLongPress((e) => onMenu?.(e.clientX, e.clientY));
+  const gestesMenu = onMenu ? {
+    onContextMenu: (e) => {
+      e.preventDefault();
+      onMenu(e.clientX, e.clientY);
+    },
+    onPointerDown: longPress.onPointerDown,
+    onPointerUp: longPress.onPointerUp,
+    onPointerLeave: longPress.onPointerLeave,
+    onPointerMove: longPress.onPointerMove,
+    onPointerCancel: longPress.onPointerCancel
+  } : {};
   return /* @__PURE__ */ jsx3("li", { children: /* @__PURE__ */ jsx3(
     "div",
     {
       role: "button",
       tabIndex: 0,
       onClick: (e) => {
-        if (longPress.shouldIgnoreClick()) {
+        if (onMenu && longPress.shouldIgnoreClick()) {
           e.preventDefault();
           return;
         }
         onOpen();
       },
       onKeyDown: (e) => e.key === "Enter" && onOpen(),
-      onContextMenu: (e) => {
-        e.preventDefault();
-        onMenu(e.clientX, e.clientY);
-      },
-      onPointerDown: longPress.onPointerDown,
-      onPointerUp: longPress.onPointerUp,
-      onPointerLeave: longPress.onPointerLeave,
-      onPointerMove: longPress.onPointerMove,
-      onPointerCancel: longPress.onPointerCancel,
-      className: "block cursor-pointer select-none rounded-lg border border-border bg-card p-4 transition-colors hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring md:select-text",
+      ...gestesMenu,
+      className: cn(
+        "block cursor-pointer select-none rounded-lg border border-border bg-card p-4 transition-colors hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring md:select-text",
+        cancelled && "border-l-4 border-l-destructive"
+      ),
       style: { WebkitTouchCallout: "none" },
       children: /* @__PURE__ */ jsxs2("div", { className: "flex items-start justify-between gap-3", children: [
         /* @__PURE__ */ jsxs2("div", { className: "min-w-0 flex-1 space-y-1.5", children: [
@@ -514,10 +524,10 @@ function HistoryRow({
         ] }),
         /* @__PURE__ */ jsxs2("div", { className: "flex shrink-0 flex-col items-end justify-between gap-2 self-stretch", children: [
           amount !== void 0 && /* @__PURE__ */ jsxs2("div", { className: "whitespace-nowrap text-right", children: [
-            /* @__PURE__ */ jsx3("div", { className: "text-lg font-semibold", children: amount }),
+            /* @__PURE__ */ jsx3("div", { className: cn("text-lg font-semibold", cancelled && "line-through decoration-2"), children: amount }),
             amountLabel && /* @__PURE__ */ jsx3("div", { className: "text-xs text-muted-foreground", children: amountLabel })
           ] }),
-          /* @__PURE__ */ jsx3(
+          onMenu && /* @__PURE__ */ jsx3(
             "button",
             {
               type: "button",
@@ -653,6 +663,77 @@ function Dialog({
       ] })
     }
   );
+}
+function ReasonPicker({
+  suggestions,
+  value,
+  onChange,
+  variant = "tiles",
+  name,
+  otherLabel = "Autre\u2026",
+  placeholder = "Motif",
+  maxLength
+}) {
+  const listeId = useId();
+  const [autreDemande, setAutreDemande] = useState2(false);
+  const autre = autreDemande || value !== "" && !suggestions.includes(value);
+  const champ = /* @__PURE__ */ jsx4(
+    "input",
+    {
+      name: variant === "text" ? name : void 0,
+      list: variant === "text" && suggestions.length > 0 ? listeId : void 0,
+      value,
+      maxLength,
+      placeholder,
+      autoFocus: variant === "tiles",
+      onChange: (e) => onChange(e.target.value),
+      className: "h-12 w-full rounded-md border border-input bg-card px-3 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/40"
+    }
+  );
+  if (variant === "text") {
+    return /* @__PURE__ */ jsxs3(Fragment2, { children: [
+      champ,
+      suggestions.length > 0 && /* @__PURE__ */ jsx4("datalist", { id: listeId, children: suggestions.map((m) => /* @__PURE__ */ jsx4("option", { value: m }, m)) })
+    ] });
+  }
+  const tuile = (actif) => cn(
+    "min-h-14 rounded-lg border px-3 text-sm font-medium transition-colors",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+    actif ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground active:bg-muted"
+  );
+  return /* @__PURE__ */ jsxs3("div", { className: "space-y-2", children: [
+    name && /* @__PURE__ */ jsx4("input", { type: "hidden", name, value }),
+    /* @__PURE__ */ jsxs3("div", { className: "grid grid-cols-2 gap-2", children: [
+      suggestions.map((m) => /* @__PURE__ */ jsx4(
+        "button",
+        {
+          type: "button",
+          "aria-pressed": !autre && value === m,
+          onClick: () => {
+            setAutreDemande(false);
+            onChange(m);
+          },
+          className: tuile(!autre && value === m),
+          children: m
+        },
+        m
+      )),
+      /* @__PURE__ */ jsx4(
+        "button",
+        {
+          type: "button",
+          "aria-pressed": autre,
+          onClick: () => {
+            setAutreDemande(true);
+            if (suggestions.includes(value)) onChange("");
+          },
+          className: tuile(autre),
+          children: otherLabel
+        }
+      )
+    ] }),
+    autre && champ
+  ] });
 }
 var TabsCtx = createContext(null);
 function useTabs(qui) {
@@ -918,6 +999,7 @@ export {
   DropdownMenuSeparator,
   FloatingMenu,
   FloatingMenuItem,
+  HistoryList,
   HistoryRow,
   InlineNotice,
   Input,
@@ -925,6 +1007,7 @@ export {
   PageContainer,
   PageHeaderRow,
   PageTitle,
+  ReasonPicker,
   SaveButton,
   Section,
   Select,

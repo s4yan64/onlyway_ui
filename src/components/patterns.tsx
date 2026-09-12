@@ -142,8 +142,26 @@ export function SyncSection({
   );
 }
 
+/* -------------------------------------------------------------- HistoryList
+   Le conteneur que <HistoryRow> exige.
+
+   ⚠️ <HistoryRow> rend un <li> NU. Posé sans liste autour, il produit un HTML
+   invalide que les lecteurs d'écran annoncent mal, et chaque app finissait par
+   réécrire son propre `<ul className="space-y-2">`. */
+export function HistoryList({ children, className }: { children: ReactNode; className?: string }) {
+  return <ul className={cn("space-y-2", className)}>{children}</ul>;
+}
+
 /* --------------------------------------------------------------- HistoryRow
-   Ligne d'historique : tap = ouvrir, kebab/clic droit = menu, long-press mobile = menu. */
+   Ligne d'historique : tap = ouvrir, kebab/clic droit = menu, long-press mobile = menu.
+
+   `onMenu` est FACULTATIF : une ligne qui n'a qu'un geste (ouvrir) ne doit pas
+   afficher un menu vide, ni intercepter l'appui long pour rien.
+
+   `cancelled` : la ligne reste LISIBLE — pleine opacité, montant barré, filet
+   rouge à gauche. ⚠️ Pas de grisé : une vente annulée est une information qu'on
+   vient justement chercher, de nuit, dehors, avec des gants. L'estomper la
+   rendrait illisible exactement là où elle compte. */
 export function HistoryRow({
   title,
   badge,
@@ -152,6 +170,7 @@ export function HistoryRow({
   amountLabel,
   onOpen,
   onMenu,
+  cancelled = false,
 }: {
   title: ReactNode;
   badge?: ReactNode;
@@ -159,32 +178,43 @@ export function HistoryRow({
   amount?: ReactNode;
   amountLabel?: string;
   onOpen: () => void;
-  onMenu: (x: number, y: number) => void;
+  onMenu?: (x: number, y: number) => void;
+  cancelled?: boolean;
 }) {
-  const longPress = useLongPress((e) => onMenu(e.clientX, e.clientY));
+  // ⚠️ Le crochet est appelé INCONDITIONNELLEMENT (règle des crochets) ; ce sont
+  // ses gestionnaires qui ne sont branchés que s'il y a un menu.
+  const longPress = useLongPress((e) => onMenu?.(e.clientX, e.clientY));
+  const gestesMenu = onMenu
+    ? {
+        onContextMenu: (e: React.MouseEvent) => {
+          e.preventDefault();
+          onMenu(e.clientX, e.clientY);
+        },
+        onPointerDown: longPress.onPointerDown,
+        onPointerUp: longPress.onPointerUp,
+        onPointerLeave: longPress.onPointerLeave,
+        onPointerMove: longPress.onPointerMove,
+        onPointerCancel: longPress.onPointerCancel,
+      }
+    : {};
   return (
     <li>
       <div
         role="button"
         tabIndex={0}
         onClick={(e) => {
-          if (longPress.shouldIgnoreClick()) {
+          if (onMenu && longPress.shouldIgnoreClick()) {
             e.preventDefault();
             return;
           }
           onOpen();
         }}
         onKeyDown={(e) => e.key === "Enter" && onOpen()}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          onMenu(e.clientX, e.clientY);
-        }}
-        onPointerDown={longPress.onPointerDown}
-        onPointerUp={longPress.onPointerUp}
-        onPointerLeave={longPress.onPointerLeave}
-        onPointerMove={longPress.onPointerMove}
-        onPointerCancel={longPress.onPointerCancel}
-        className="block cursor-pointer select-none rounded-lg border border-border bg-card p-4 transition-colors hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring md:select-text"
+        {...gestesMenu}
+        className={cn(
+          "block cursor-pointer select-none rounded-lg border border-border bg-card p-4 transition-colors hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring md:select-text",
+          cancelled && "border-l-4 border-l-destructive",
+        )}
         style={{ WebkitTouchCallout: "none" }}
       >
         <div className="flex items-start justify-between gap-3">
@@ -198,21 +228,25 @@ export function HistoryRow({
           <div className="flex shrink-0 flex-col items-end justify-between gap-2 self-stretch">
             {amount !== undefined && (
               <div className="whitespace-nowrap text-right">
-                <div className="text-lg font-semibold">{amount}</div>
+                <div className={cn("text-lg font-semibold", cancelled && "line-through decoration-2")}>
+                  {amount}
+                </div>
                 {amountLabel && <div className="text-xs text-muted-foreground">{amountLabel}</div>}
               </div>
             )}
-            <button
-              type="button"
-              aria-label="Menu"
-              onClick={(e) => {
-                e.stopPropagation();
-                onMenu(e.clientX, e.clientY);
-              }}
-              className="hidden h-11 w-11 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground md:flex"
-            >
-              <MoreVertical className="h-5 w-5" />
-            </button>
+            {onMenu && (
+              <button
+                type="button"
+                aria-label="Menu"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onMenu(e.clientX, e.clientY);
+                }}
+                className="hidden h-11 w-11 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground md:flex"
+              >
+                <MoreVertical className="h-5 w-5" />
+              </button>
+            )}
           </div>
         </div>
       </div>

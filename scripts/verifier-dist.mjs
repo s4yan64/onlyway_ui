@@ -45,7 +45,9 @@ for (const f of ["src/styles/design-tokens.css", "src/styles/base.css"]) {
 // barre du bas repasse sous l'indicateur d'accueil de l'iPhone, sans erreur.
 const base = existsSync("src/styles/base.css") ? readFileSync("src/styles/base.css", "utf8") : "";
 const dist = existsSync("dist/index.js") ? readFileSync("dist/index.js", "utf8") : "";
-for (const classe of ["safe-top", "safe-bottom"]) {
+// ⚠️ `above-nav` depuis la 0.4.0 : même nature, même risque. Sans elle, le panier
+// ancré tombe à `bottom: auto` et se colle en HAUT de l'écran — sans erreur.
+for (const classe of ["safe-top", "safe-bottom", "above-nav"]) {
   if (!dist.includes(classe)) continue; // non utilisée : rien à garantir
   base.includes(`.${classe}`)
     ? ok(`.${classe} définie dans base.css`)
@@ -55,6 +57,11 @@ for (const classe of ["safe-top", "safe-bottom"]) {
 // Un échantillon d'exports : si le point d'entrée a changé de forme, on le sait.
 const src = existsSync("dist/index.js") ? readFileSync("dist/index.js", "utf8") : "";
 for (const e of [
+  "AnchoredBar",
+  "InlineNotice",
+  "HistoryList",
+  "HistoryRow",
+  "ReasonPicker",
   "Button",
   "Card",
   "Input",
